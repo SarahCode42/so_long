@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 15:16:15 by jbensimo          #+#    #+#             */
-/*   Updated: 2024/12/11 17:46:02 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/19 13:36:36 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ ssize_t	ft_str_chr_len(char *s, char c)
 	return (-1);
 }
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen_GNL(char *s)
 {
 	size_t	len;
 
@@ -40,7 +40,7 @@ size_t	ft_strlen(char *s)
 	return (len);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_GNL(char *s1, char *s2)
 {
 	char	*dest;
 	size_t	i;
@@ -52,7 +52,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		s1 = "";
 	if (!s2)
 		return (NULL);
-	dest = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	dest = malloc(sizeof(char) * (ft_strlen_GNL(s1) + ft_strlen_GNL(s2) + 1));
 	if (!dest)
 		return (NULL);
 	while (s1[i])

@@ -6,7 +6,7 @@
 #    By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/18 10:41:28 by jbensimo          #+#    #+#              #
-#    Updated: 2025/02/18 20:34:20 by jbensimo         ###   ########.fr        #
+#    Updated: 2025/02/19 16:39:26 by jbensimo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,11 @@ NAME = so_long
 CC = cc
 FLAGS = -Wall -Wextra -Werror
 
-SRCS = so_long.c window.c
-GNL_DIR = ./GetNextLine
-GNL_SRCS = $(GNL_DIR)/get_next_line.c $(GNL_DIR)/get_next_line_utils.c
-SRCS += $(GNL_SRCS)
+SRCS = so_long.c window.c parsing.c
+GNL_SRCS = ./GetNextLine/get_next_line.c ./GetNextLine/get_next_line_utils.c
 
-OBJS = $(SRCS:.c=.o)
+GNL_OBJS = $(GNL_SRCS:.c=.o)
+OBJS = $(SRCS:.c=.o) $(GNL_OBJS)
 
 LIBFT = ./libft/libft.a
 FT_PRINTF = ./ft_printf/ft_printf.a
@@ -53,7 +52,7 @@ clean:
 	$(MAKE) -C ft_printf clean
 	$(MAKE) -C $(MLX_DIR) clean
 
-fclean:
+fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C libft fclean
 	$(MAKE) -C ft_printf fclean

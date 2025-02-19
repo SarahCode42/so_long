@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 12:19:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2024/12/16 16:30:48 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/19 13:36:40 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*read_line(int fd, char *rmd)
 			return (free(buffer), free(rmd), NULL);
 		buffer[bytes_read] = '\0';
 		temp = rmd;
-		rmd = ft_strjoin(rmd, buffer);
+		rmd = ft_strjoin_GNL(rmd, buffer);
 		free(temp);
 		if (!rmd)
 			return (free(buffer), NULL);
@@ -50,7 +50,7 @@ char	*find_line(char *rmd)
 		return (NULL);
 	len_char = ft_str_chr_len(rmd, '\n');
 	if (len_char == -1)
-		len_char = ft_strlen(rmd);
+		len_char = ft_strlen_GNL(rmd);
 	else
 		len_char++;
 	line = malloc(sizeof(char) * (len_char + 1));
@@ -76,7 +76,7 @@ char	*clean_rmd(char *rmd)
 	if (len_chr == -1)
 		return (free(rmd), NULL);
 	len_chr++;
-	temp = malloc(sizeof(char) * (ft_strlen(rmd) - len_chr + 1));
+	temp = malloc(sizeof(char) * (ft_strlen_GNL(rmd) - len_chr + 1));
 	if (!temp)
 		return (free(rmd), NULL);
 	i = 0;

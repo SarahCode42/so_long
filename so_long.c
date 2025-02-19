@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:37:36 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/18 20:34:28 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:47:21 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,25 @@
 
 int	main(int argc, char **argv)
 {
-	void	*mlx;
-	void	*win;
-	int		fd;
+	t_data	*f;
 
 	if (argc != 2)
-        return (1);
-	mlx = mlx_init();
-	if (!mlx)
 		return (1);
-	win = mlx_new_window(mlx, 1400, 1000, "so_long");
-	if (!win)
+	f = ft_calloc(1, sizeof(t_data));
+	if (!f)
 		return (1);
-	fd = open_ber(argv[1]);
-	if (fd < 0)
+	f->filename = argv[1];
+	f->mlx = mlx_init();
+	if (!f->mlx)
 		return (1);
-	mlx_hook(win, 17, 0, close_window, NULL);
-	mlx_key_hook(win, key_hook, NULL);
-	mlx_loop(mlx);
-	close(fd);
+	f->win = mlx_new_window(f->mlx, 1400, 1000, "so_long");
+	if (!f->win)
+		return (1);
+	f->map = load_map(f);
+	if (!f->map)
+		return (1);
+	mlx_hook(f->win, 17, 0, close_window, f);
+	mlx_key_hook(f->win, key_hook, f);
+	mlx_loop(f->mlx);
 	return (0);
 }
