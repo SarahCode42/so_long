@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/19 19:29:49 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:06:00 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,14 @@
 # include "libft/libft.h"
 # include "GetNextLine/get_next_line.h"
 
+typedef struct s_textures
+{
+	void	*wall;
+	void	*player;
+	void	*exit;
+	void	*collectible;
+}t_textures;
+
 typedef struct s_map
 {
 	int		p;
@@ -28,16 +36,20 @@ typedef struct s_map
 	int		c;
 }t_map;
 
-
 typedef struct s_data
 {
-	void	*mlx;
-	void	*win;
-	char	**map;
-	t_map	map_info;
-	char	*filename;
-	int		fd;
+	void		*mlx;
+	void		*win;
+	char		**map;
+	t_map		map_info;
+	char		*filename;
+	int			fd;
+	t_textures	textures;
 }t_data;
+
+// map.c
+void	draw_map(t_data *f);
+void	load_textures(t_data *f);
 
 // parsing.c
 int		validate_map(t_data *f);
