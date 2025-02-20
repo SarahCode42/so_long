@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/19 17:55:22 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/19 19:29:49 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,14 @@ typedef struct s_data
 	int		fd;
 }t_data;
 
+// parsing.c
+int		validate_map(t_data *f);
+int		check_walls(t_data *f);
+int		check_elements(t_data *f);
+
+// so_long.c
+void	free_map(char **map);
+
 // window.c
 int		close_window(void *param);
 int		key_hook(int keycode, void *param);
@@ -46,7 +54,4 @@ int		count_lines(t_data *f);
 int		open_ber(t_data *f);
 char	**load_map(t_data *f);
 
-// parsing.c
-int		check_walls(t_data *f);
-int		check_elements(t_data *f);
 #endif

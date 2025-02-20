@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:09:55 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/19 17:54:52 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:14:19 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ int	validate_map(t_data *f)
 int	check_walls(t_data *f)
 {
 	int	i;
-	int j;
+	int	j;
 	int	len;
-	int last;
+	int	last;
 
 	len = ft_strlen(f->map[0]);
+	if (f->map[0][len - 1] == '\n') // Vérifie si la dernière colonne est un '\n'
+		len--; // Ignore le '\n' pour éviter l'erreur
 	last = 0;
 	while (f->map[last])
 		last++;
@@ -38,19 +40,22 @@ int	check_walls(t_data *f)
 	i = 0;
 	while (f->map[i])
 	{
-		if(f->map[i][0] != '1' || f->map[i][len - 1] != '1')
-			return (0);
+		if (ft_strlen(f->map[i]) - (f->map[i][ft_strlen(f->map[i]) - 1] == '\n') != len)
+			return (write(2, "Error: Map must be rectangular\n", 31), 0);
+		if (f->map[i][0] != '1' || f->map[i][len - 1] != '1')
+			return (write(2, "Error: Map must be enclosed by walls\n", 37), 0);
 		i++;
-	}
+	}	
 	j = 0;
 	while (j < len)
 	{
 		if (f->map[0][j] != '1' || f->map[last][j] != '1')
-			return (0);
+			return (write(2, "Error: Map must be enclosed by walls\n", 37), 0);
 		j++;
 	}
 	return (1);
 }
+
 
 int	check_elements(t_data *f)
 {
