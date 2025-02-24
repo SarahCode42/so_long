@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/20 17:06:00 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:21:32 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,49 +21,56 @@
 # include "libft/libft.h"
 # include "GetNextLine/get_next_line.h"
 
+# define TILE_SIZE 32  // Taille d’un bloc de la carte
+
+// Gestion des textures
 typedef struct s_textures
 {
 	void	*wall;
 	void	*player;
 	void	*exit;
 	void	*collectible;
-}t_textures;
+} t_textures;
 
+// Informations sur la carte
 typedef struct s_map
 {
-	int		p;
-	int		e;
-	int		c;
-}t_map;
+	int		player_count;
+	int		exit_count;
+	int		collectible_count;
+} t_map;
 
-typedef struct s_data
+// Structure principale du jeu
+typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
 	char		**map;
-	t_map		map_info;
-	char		*filename;
+	int			map_width;
+	int			map_height;
 	int			fd;
+	char		*filename;
+	t_map		map_info;
 	t_textures	textures;
-}t_data;
+} t_game;
 
 // map.c
-void	draw_map(t_data *f);
-void	load_textures(t_data *f);
+char	**load_map(t_game *g);
+int		draw_map(t_game *g);
+int		load_textures(t_game *g);
+int		count_lines(t_game *g);
+void	free_map(char **map);
 
 // parsing.c
-int		validate_map(t_data *f);
-int		check_walls(t_data *f);
-int		check_elements(t_data *f);
+int		validate_map(t_game *g);
+int		check_walls(t_game *g);
+int		check_elements(t_game *g);
 
 // so_long.c
-void	free_map(char **map);
+
 
 // window.c
 int		close_window(void *param);
 int		key_hook(int keycode, void *param);
-int		count_lines(t_data *f);
-int		open_ber(t_data *f);
-char	**load_map(t_data *f);
 
 #endif
