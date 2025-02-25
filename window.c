@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 18:42:18 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:16:34 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,24 +85,48 @@ void move_player(t_game *g, int dx, int dy)
 
     g->player_x = new_x;
     g->player_y = new_y;
-
-    if (g->map[new_x][new_y] == 'E' && g->collected == g->map_info.collectible_count)
-    {
-        time_t end_time = time(NULL);
-        int elapsed_time = (int)difftime(end_time, g->start_time); // 🔥 Temps écoulé
-
-        printf("🎉 Tous les collectibles récupérés !\n");
-        printf("🏁 Partie terminée !\n");
-        printf("📊 Statistiques : %d coups en %d secondes.\n", g->moves, elapsed_time);
-        fflush(stdout);
-
-        close_window(g);
-    }
+	if (g->map[new_x][new_y] == 'E' && g->collected == g->map_info.collectible_count)
+	{
+		printf("🎉 Tous les collectibles récupérés !\n");
+		printf("🏁 Partie terminée !\n");
+	
+		// 🔥 Supprimer le joueur et restaurer la sortie
+		g->map[g->player_x][g->player_y] = '0'; // Ancienne position devient vide
+		g->map[new_x][new_y] = 'E'; // La sortie reste visible
+	
+		// 🔥 Afficher le message de victoire
+		mlx_clear_window(g->mlx, g->win); // Efface l'affichage avant d'écrire
+		draw_map(g); // 🔥 Redessine la carte SANS le joueur
+		mlx_string_put(g->mlx, g->win, g->map_width * TILE_SIZE / 2 - 70, g->map_height * TILE_SIZE / 2, 0x0000FF, "CONGRATULATIONS!");
+		mlx_string_put(g->mlx, g->win, g->map_width * TILE_SIZE / 2 - 50, g->map_height * TILE_SIZE / 2 + 30, 0x0000FF, "Press ESC to exit.");
+	
+		// 🔥 Bloquer les mouvements
+		mlx_key_hook(g->win, exit_hook, g); // 🔥 Seul ESC fonctionne après la victoire
+	
+		return; // 🔥 Ne pas exécuter `draw_map(g)` après pour éviter de redessiner `P`
+	}
 
     g->map[new_x][new_y] = 'P'; 
-    draw_map(g);
+    draw_map(g); // Redessine la carte après le déplacement
+	display_stats(g); // 🔥 Met à jour les stats sur la fenêtre
 }
 
+void display_stats(t_game *g)
+{
+    char stats[50];
+    sprintf(stats, "Coups: %d | Temps: %d sec", g->moves, (int)difftime(time(NULL), g->start_time));
+
+    //mlx_string_put(g->mlx, g->win, 20, 20, 0xFFFFFF, "STATISTIQUES :");
+    mlx_string_put(g->mlx, g->win, 20, 20, 0x0000FF, stats); // Affiche les stats en rouge
+}
+
+int	exit_hook(int keycode, void *param)
+{
+    t_game *g = (t_game *)param;
+    if (keycode == 65307) // 🔥 Code de ESC (Linux) -> Quitte le jeu
+        close_window(g);
+    return (0);
+}
 
 
 

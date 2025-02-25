@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 18:43:14 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:16:31 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,8 @@ int		close_window(void *param);
 void	find_player(t_game *g);
 int		key_hook(int keycode, void *param);
 void	move_player(t_game *g, int dx, int dy);
+void	display_stats(t_game *g);
+int		exit_hook(int keycode, void *param);
+
 
 #endif
