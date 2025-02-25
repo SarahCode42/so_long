@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/24 19:11:35 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:39:17 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ char	**load_map(t_game *g)
 
 int draw_map(t_game *g)
 {
-    int x;
-	int y;
+    int x, y;
 
     y = 0;
     while (y < g->map_height)
@@ -49,19 +48,27 @@ int draw_map(t_game *g)
         x = 0;
         while (x < g->map_width)
         {
+            // Afficher le fond avant tout
+            //mlx_put_image_to_window(g->mlx, g->win, g->textures.background, x * TILE_SIZE, y * TILE_SIZE);
+
+            // Sélectionner la texture appropriée
             void *img = NULL;
             if (g->map[y][x] == '1')
                 img = g->textures.wall;
-            else if (g->map[y][x] == '0')
-                img = NULL;
             else if (g->map[y][x] == 'P')
                 img = g->textures.player;
             else if (g->map[y][x] == 'C')
                 img = g->textures.collectible;
             else if (g->map[y][x] == 'E')
                 img = g->textures.exit;
+			else if (g->map[y][x] == '0')
+				img = g->textures.background;  // ✅ Mettre une texture blanche en fond
+			
+
+            // Afficher l'image uniquement si elle existe
             if (img)
                 mlx_put_image_to_window(g->mlx, g->win, img, x * TILE_SIZE, y * TILE_SIZE);
+            
             x++;
         }
         y++;
@@ -69,16 +76,21 @@ int draw_map(t_game *g)
     return (0);
 }
 
+
 int load_textures(t_game *g)
 {
     int w;
 	int	h;
 
     g->textures.wall = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
-    g->textures.player = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
-    g->textures.collectible = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
-    g->textures.exit = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
-    if (!g->textures.wall || !g->textures.player || !g->textures.collectible || !g->textures.exit)
+	g->textures.floor = mlx_xpm_file_to_image(g->mlx, "textures/floor.xpm", &w, &h);
+    g->textures.player = mlx_xpm_file_to_image(g->mlx, "textures/player.xpm", &w, &h);
+    g->textures.collectible = mlx_xpm_file_to_image(g->mlx, "textures/collectible.xpm", &w, &h);
+    g->textures.exit = mlx_xpm_file_to_image(g->mlx, "textures/exit.xpm", &w, &h);
+	g->textures.background = mlx_xpm_file_to_image(g->mlx, "textures/background.xpm", &w, &h);
+
+
+    if (!g->textures.wall || !g->textures.floor || !g->textures.player || !g->textures.collectible || !g->textures.exit || !g->textures.background)
     {
 		printf("Error: Unable to load textures.\n");
 		return (1);

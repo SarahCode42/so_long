@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/24 19:21:32 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:39:20 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,11 @@
 typedef struct s_textures
 {
 	void	*wall;
+	void	*floor;
 	void	*player;
 	void	*exit;
 	void	*collectible;
+	void	*background;
 } t_textures;
 
 // Informations sur la carte
@@ -72,5 +74,6 @@ int		check_elements(t_game *g);
 // window.c
 int		close_window(void *param);
 int		key_hook(int keycode, void *param);
+void	move_player(t_game *g, int dx, int dy);
 
 #endif

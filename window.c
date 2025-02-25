@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/24 19:18:08 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:39:22 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,12 @@ int	key_hook(int keycode, void *param)
 		move_player(g, 1, 0);
 	return (0);
 }
+
+void	move_player(t_game *g, int dx, int dy)
+{
+	(void)g;
+	(void)dx;
+	(void)dy;
+	// Fonction temporaire pour éviter l'erreur de compilation
+}
+
