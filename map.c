@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 17:39:17 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:00:27 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,26 @@ char	**load_map(t_game *g)
 	g->map = malloc(sizeof(char *) * (lines + 1));
 	if (!g->map)
 		return (close(g->fd), NULL);
+
 	i = 0;
-	while ((line = get_next_line(g->fd)) != NULL)
+	while (i < lines && (line = get_next_line(g->fd)) != NULL)
 	{
 		g->map[i] = line;
 		i++;
 	}
-	g->map[i] = NULL;
+	g->map[i] = NULL; // Assurer la terminaison
+
 	close(g->fd);
+	if (i != lines) // Si on n'a pas lu toutes les lignes, il y a un problème
+		return (free_map(g->map), NULL);
+
+	// 🔥 Trouver le joueur après chargement de la carte
+	find_player(g);
+	printf("Joueur trouvé à x=%d, y=%d\n", g->player_x, g->player_y);
+
 	return (g->map);
 }
+
 
 int draw_map(t_game *g)
 {

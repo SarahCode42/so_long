@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 17:39:20 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:12:51 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,20 @@
 # include "GetNextLine/get_next_line.h"
 
 # define TILE_SIZE 32  // Taille d’un bloc de la carte
+
+#ifdef __linux__
+    #define ESC 65307
+    #define W 119
+    #define S 115
+    #define A 97
+    #define D 100
+#else
+    #define ESC 53
+    #define W 13
+    #define S 1
+    #define A 0
+    #define D 2
+#endif
 
 // Gestion des textures
 typedef struct s_textures
@@ -54,6 +68,9 @@ typedef struct s_game
 	char		*filename;
 	t_map		map_info;
 	t_textures	textures;
+	int			player_x;
+	int			player_y;
+	int			collected;
 } t_game;
 
 // map.c
@@ -73,6 +90,7 @@ int		check_elements(t_game *g);
 
 // window.c
 int		close_window(void *param);
+void	find_player(t_game *g);
 int		key_hook(int keycode, void *param);
 void	move_player(t_game *g, int dx, int dy);
 
