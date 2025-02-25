@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 18:24:33 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:42:18 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,15 @@ void move_player(t_game *g, int dx, int dy)
     if (g->map[new_x][new_y] == 'E' && g->collected < g->map_info.collectible_count)
     {
         printf("🚫 La sortie est bloquée ! Il reste des collectibles.\n");
-        return; // 🔥 Bloque le passage tant que tous les `C` ne sont pas pris
+        return;
     }
 
-    if (g->map[new_x][new_y] == 'C') // Collectible ramassé
+    g->moves++; // 🔥 Compte le déplacement
+
+    if (g->map[new_x][new_y] == 'C') 
         g->collected++;
 
-    if (g->map[g->player_x][g->player_y] == 'E') // 🔥 Si on quitte une sortie, elle reste
+    if (g->map[g->player_x][g->player_y] == 'E') 
         g->map[g->player_x][g->player_y] = 'E';
     else
         g->map[g->player_x][g->player_y] = '0';
@@ -86,15 +88,21 @@ void move_player(t_game *g, int dx, int dy)
 
     if (g->map[new_x][new_y] == 'E' && g->collected == g->map_info.collectible_count)
     {
-        printf("🎉 Tous les collectibles ont été pris !\n");
+        time_t end_time = time(NULL);
+        int elapsed_time = (int)difftime(end_time, g->start_time); // 🔥 Temps écoulé
+
+        printf("🎉 Tous les collectibles récupérés !\n");
         printf("🏁 Partie terminée !\n");
-        close_window(g); // 🔥 Quitte proprement le jeu
+        printf("📊 Statistiques : %d coups en %d secondes.\n", g->moves, elapsed_time);
+        fflush(stdout);
+
+        close_window(g);
     }
 
-    g->map[new_x][new_y] = 'P'; // Déplacer le joueur
-
-    draw_map(g); // 🔥 Redessine la carte après le déplacement
+    g->map[new_x][new_y] = 'P'; 
+    draw_map(g);
 }
+
 
 
 

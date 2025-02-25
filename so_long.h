@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 18:12:51 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:43:14 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <time.h>
 # include <mlx.h>
 # include "libft/libft.h"
 # include "GetNextLine/get_next_line.h"
@@ -71,6 +72,8 @@ typedef struct s_game
 	int			player_x;
 	int			player_y;
 	int			collected;
+	int			moves;
+	int			start_time;
 } t_game;
 
 // map.c

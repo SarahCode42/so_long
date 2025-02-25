@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 18:00:27 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:41:58 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ char	**load_map(t_game *g)
 
 	// 🔥 Trouver le joueur après chargement de la carte
 	find_player(g);
+	g->moves = 0;  
+	g->start_time = time(NULL); // 🔥 Enregistre l'heure de début
 	printf("Joueur trouvé à x=%d, y=%d\n", g->player_x, g->player_y);
 
 	return (g->map);
