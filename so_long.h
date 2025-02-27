@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/27 15:50:13 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:39:23 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,19 +25,20 @@
 
 # define TILE_SIZE 32  // Taille d’un bloc de la carte
 
-#ifdef __linux__
-    #define ESC 65307
-    #define W 119
-    #define S 115
-    #define A 97
-    #define D 100
-#else
-    #define ESC 53
-    #define W 13
-    #define S 1
-    #define A 0
-    #define D 2
-#endif
+// LINUX
+# define ESC 65307
+# define W 119
+# define S 115
+# define A 97
+# define D 100
+
+/*// MAC
+#define ESC 53
+#define W 13
+#define S 1
+#define A 0
+#define D 2
+#endif*/
 
 // Gestion des textures
 typedef struct s_textures
@@ -48,7 +49,7 @@ typedef struct s_textures
 	void	*exit;
 	void	*collectible;
 	void	*background;
-} t_textures;
+}t_textures;
 
 // Informations sur la carte
 typedef struct s_map
@@ -56,7 +57,7 @@ typedef struct s_map
 	int		player_count;
 	int		exit_count;
 	int		collectible_count;
-} t_map;
+}t_map;
 
 // Structure principale du jeu
 typedef struct s_game
@@ -75,7 +76,7 @@ typedef struct s_game
 	int			collected;
 	int			moves;
 	int			start_time;
-} t_game;
+}t_game;
 
 // map.c
 char	**load_map(t_game *g);
@@ -104,6 +105,5 @@ int		key_hook(int keycode, void *param);
 
 //void	display_stats(t_game *g);
 int		exit_hook(int keycode, void *param);
-
 
 #endif

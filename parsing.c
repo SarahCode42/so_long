@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:09:55 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 18:00:40 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:57:52 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	check_walls(t_game *g)
 	int	last;
 
 	len = ft_strlen(g->map[0]);
-	if (g->map[0][len - 1] == '\n') // Vérifie si la dernière colonne est un '\n'
-		len--; // Ignore le '\n' pour éviter l'erreur
+	if (g->map[0][len - 1] == '\n')
+		len--;
 	last = 0;
 	while (g->map[last])
 		last++;
@@ -56,10 +56,9 @@ int	check_walls(t_game *g)
 	return (1);
 }
 
-
 int	check_elements(t_game *g)
 {
-	int i;
+	int	i;
 	int	j;
 
 	g->map_info.player_count = 0;
