@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/25 19:16:31 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:50:13 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <time.h>
 # include <mlx.h>
 # include "libft/libft.h"
+# include "ft_printf/ft_printf.h"
 # include "GetNextLine/get_next_line.h"
 
 # define TILE_SIZE 32  // Taille d’un bloc de la carte
@@ -88,15 +89,20 @@ int		validate_map(t_game *g);
 int		check_walls(t_game *g);
 int		check_elements(t_game *g);
 
-// so_long.c
+// player.c
+void	find_player(t_game *g);
+int		can_move(t_game *g, int new_x, int new_y);
+void	update_player_position(t_game *g, int new_x, int new_y);
+void	handle_endgame(t_game *g);
+void	move_player(t_game *g, int dx, int dy);
 
+// so_long.c
 
 // window.c
 int		close_window(void *param);
-void	find_player(t_game *g);
 int		key_hook(int keycode, void *param);
-void	move_player(t_game *g, int dx, int dy);
-void	display_stats(t_game *g);
+
+//void	display_stats(t_game *g);
 int		exit_hook(int keycode, void *param);
 
 

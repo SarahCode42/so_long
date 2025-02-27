@@ -6,7 +6,7 @@
 #    By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/18 10:41:28 by jbensimo          #+#    #+#              #
-#    Updated: 2025/02/24 15:53:50 by jbensimo         ###   ########.fr        #
+#    Updated: 2025/02/27 12:32:54 by jbensimo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = so_long
 CC = cc
 FLAGS = -Wall -Wextra -Werror
 
-SRCS = so_long.c window.c parsing.c map.c
+SRCS = so_long.c window.c parsing.c player.c map.c
 GNL_SRCS = ./GetNextLine/get_next_line.c ./GetNextLine/get_next_line_utils.c
 
 GNL_OBJS = $(GNL_SRCS:.c=.o)
