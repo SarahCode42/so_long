@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:34:05 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/27 16:31:57 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/27 22:05:28 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	find_player(t_game *g)
 		pos = ft_strchr(g->map[i], 'P');
 		if (pos)
 		{
-			g->player_x = i;
-			g->player_y = pos - g->map[i];
+			g->player_x = pos - g->map[i]; // X = colonne
+			g->player_y = i;               // Y = ligne
 			return ;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:09:55 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/27 17:57:52 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/27 21:35:40 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,40 @@
 
 int	validate_map(t_game *g)
 {
+	int original_collectible_count;
+	int i = 0;
+
 	if (!g->map)
 		return (0);
+
+	// 🔥 Ajout : Afficher la carte ligne par ligne
+	while (g->map[i])
+	{
+		ft_printf("Ligne %d : %s\n", i, g->map[i]);
+		i++;
+	}
+
 	if (!check_walls(g))
 		return (write(2, "Error: Map must be enclosed by walls\n", 37), 0);
 	if (!check_elements(g))
 		return (write(2, "Error: Map must have 1 'P', 1 'E', and at least 1 'C'\n", 53), 0);
+
+	// Sauvegarde de collectible_count avant bfs
+	original_collectible_count = g->map_info.collectible_count;
+
+	if (!bfs(g, 'P'))
+		return (write(2, "Error: Not all collectibles are reachable\n", 41), 0);
+
+	// Restaurer collectible_count pour que bfs('E') fonctionne bien
+	g->map_info.collectible_count = original_collectible_count;
+
+	if (!bfs(g, 'E'))
+		return (write(2, "Error: The exit is not reachable\n", 33), 0);
+
 	return (1);
 }
+
+
 
 int	check_walls(t_game *g)
 {

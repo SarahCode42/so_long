@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/27 17:39:23 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/27 21:16:06 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,25 @@
 #define A 0
 #define D 2
 #endif*/
+
+// BFS
+typedef struct s_point
+{
+	int	x;
+	int	y;
+}t_point;
+
+typedef struct s_node
+{
+    t_point			pos;
+    struct s_node	*next;
+}t_node;
+
+typedef struct s_queue
+{
+    t_node	*top;
+    t_node	*bottom;
+}t_queue;
 
 // Gestion des textures
 typedef struct s_textures
@@ -78,6 +97,13 @@ typedef struct s_game
 	int			start_time;
 }t_game;
 
+// bfs.c
+int		**init_visited(int height, int width);
+void	process_neighbors(t_game *g, t_queue *queue, int **visited, t_point p);
+void	free_visited(int **visited, int height);
+int		init_bfs_and_run(t_game *g, t_queue *queue, int **visited, char start_char);
+int		bfs(t_game *g, char start_char);
+
 // map.c
 char	**load_map(t_game *g);
 int		draw_map(t_game *g);
@@ -96,6 +122,11 @@ int		can_move(t_game *g, int new_x, int new_y);
 void	update_player_position(t_game *g, int new_x, int new_y);
 void	handle_endgame(t_game *g);
 void	move_player(t_game *g, int dx, int dy);
+
+// queue.c
+t_queue	*init_queue(void);
+void	enqueue(t_queue *queue, t_point pos);
+t_point	dequeue(t_queue *queue);
 
 // so_long.c
 
