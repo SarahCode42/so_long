@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 12:46:10 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:19:14 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,24 @@ int	load_textures(t_game *g)
 	int	w;
 	int	h;
 
-	g->textures.wall = mlx_xpm_file_to_image
-		(g->mlx, "textures/wall.xpm", &w, &h);
-	g->textures.floor = mlx_xpm_file_to_image
-		(g->mlx, "textures/floor.xpm", &w, &h);
-	g->textures.player = mlx_xpm_file_to_image
-		(g->mlx, "textures/player.xpm", &w, &h);
-	g->textures.collectible = mlx_xpm_file_to_image
-		(g->mlx, "textures/collectible.xpm", &w, &h);
-	g->textures.exit = mlx_xpm_file_to_image
-		(g->mlx, "textures/exit.xpm", &w, &h);
-	g->textures.background = mlx_xpm_file_to_image
-		(g->mlx, "textures/background.xpm", &w, &h);
-	if (!g->textures.wall || !g->textures.floor || !g->textures.player
-		|| !g->textures.collectible || !g->textures.exit
-		|| !g->textures.background)
-	{
-		write(2, "Error: Unable to load textures.\n", 32);
-		return (1);
-	}
+	g->textures.wall = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
+	if (!g->textures.wall)
+		return (write(2, "Error: Unable to load wall texture.\n", 36), 1);
+	g->textures.floor = mlx_xpm_file_to_image(g->mlx, "textures/floor.xpm", &w, &h);
+	if (!g->textures.floor)
+		return (destroy_textures(g), write(2, "Error: Unable to load floor texture.\n", 37), 1);
+	g->textures.player = mlx_xpm_file_to_image(g->mlx, "textures/player.xpm", &w, &h);
+	if (!g->textures.player)
+		return (destroy_textures(g), write(2, "Error: Unable to load player texture.\n", 38), 1);
+	g->textures.collectible = mlx_xpm_file_to_image(g->mlx, "textures/collectible.xpm", &w, &h);
+	if (!g->textures.collectible)
+		return (destroy_textures(g), write(2, "Error: Unable to load collectible texture.\n", 42), 1);
+	g->textures.exit = mlx_xpm_file_to_image(g->mlx, "textures/exit.xpm", &w, &h);
+	if (!g->textures.exit)
+		return (destroy_textures(g), write(2, "Error: Unable to load exit texture.\n", 35), 1);
+	g->textures.background = mlx_xpm_file_to_image(g->mlx, "textures/background.xpm", &w, &h);
+	if (!g->textures.background)
+		return (destroy_textures(g), write(2, "Error: Unable to load background texture.\n", 41), 1);
 	return (0);
 }
 

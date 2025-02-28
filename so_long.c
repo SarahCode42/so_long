@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:37:36 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 12:46:18 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:19:01 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	main(int argc, char **argv)
 	mlx_hook(g->window, 17, 0, close_window, g);
 	mlx_key_hook(g->window, key_hook, g);
 	mlx_loop(g->mlx);
+	//free_game(g);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 12:47:56 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:19:31 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,9 @@ void	free_visited(int **visited, int height);
 void	error_exit(char *msg, t_game *g);
 
 // window.c
-int		close_window(void *param);
+void	destroy_textures(t_game *g);
+int		close_window(t_game *g);
 int		key_hook(int keycode, void *param);
 int		exit_hook(int keycode, void *param);
+
 #endif

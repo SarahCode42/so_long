@@ -6,21 +6,40 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 12:45:58 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:19:33 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-#include "so_long.h"
-
-int	close_window(void *param)
+void	destroy_textures(t_game *g)
 {
-	t_game	*g;
+	if (g->textures.wall)
+		mlx_destroy_image(g->mlx, g->textures.wall);
+	if (g->textures.floor)
+		mlx_destroy_image(g->mlx, g->textures.floor);
+	if (g->textures.player)
+		mlx_destroy_image(g->mlx, g->textures.player);
+	if (g->textures.collectible)
+		mlx_destroy_image(g->mlx, g->textures.collectible);
+	if (g->textures.exit)
+		mlx_destroy_image(g->mlx, g->textures.exit);
+	if (g->textures.background)
+		mlx_destroy_image(g->mlx, g->textures.background);
+}
 
-	g = (t_game *)param;
-	free_map(g->map.grille);
-	mlx_destroy_window(g->mlx, g->window);
+int	close_window(t_game *g)
+{
+	destroy_textures(g);
+	if (g->window)
+		mlx_destroy_window(g->mlx, g->window);
+	if (g->mlx)
+	{
+		mlx_destroy_display(g->mlx);
+		free(g->mlx);
+	}
+	if (g->map.grille)
+		free_map(g->map.grille);
 	exit(0);
 }
 
@@ -32,7 +51,10 @@ int key_hook(int keycode, void *param)
     if (g->game_over)
     {
         if (keycode == ESC)
+		{
             close_window(g);
+			
+		}
         return (0);
     }
 	else if (keycode == W)
