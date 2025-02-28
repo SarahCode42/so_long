@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/27 21:16:06 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:47:56 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,43 +23,42 @@
 # include "ft_printf/ft_printf.h"
 # include "GetNextLine/get_next_line.h"
 
-# define TILE_SIZE 32  // Taille d’un bloc de la carte
+# define TILE_SIZE 32
 
-// LINUX
+// Keyboard (Linux)
 # define ESC 65307
 # define W 119
 # define S 115
 # define A 97
 # define D 100
 
-/*// MAC
-#define ESC 53
-#define W 13
-#define S 1
-#define A 0
-#define D 2
+/*// Keyboard (Mac)
+# define ESC 53
+# define W 13
+# define S 1
+# define A 0
+# define D 2
 #endif*/
 
-// BFS
+// Positions
 typedef struct s_point
 {
 	int	x;
 	int	y;
 }t_point;
 
-typedef struct s_node
+// Map
+typedef struct s_map
 {
-    t_point			pos;
-    struct s_node	*next;
-}t_node;
+	char	**grille;
+	int		width;
+	int		height;
+	int		player_count;
+	int		exit_count;
+	int		collectible_count;
+}t_map;
 
-typedef struct s_queue
-{
-    t_node	*top;
-    t_node	*bottom;
-}t_queue;
-
-// Gestion des textures
+// Textures
 typedef struct s_textures
 {
 	void	*wall;
@@ -70,46 +69,40 @@ typedef struct s_textures
 	void	*background;
 }t_textures;
 
-// Informations sur la carte
-typedef struct s_map
+// Player
+typedef struct s_player
 {
-	int		player_count;
-	int		exit_count;
-	int		collectible_count;
-}t_map;
+	int		x;
+	int		y;
+	int		moves;
+	int		collected;
+}t_player;
 
-// Structure principale du jeu
+// Game
 typedef struct s_game
 {
 	void		*mlx;
-	void		*win;
-	char		**map;
-	int			map_width;
-	int			map_height;
+	void		*window;
+	t_map		map;
+	t_textures	textures;
+	t_player	player;
+	t_point		exit;
 	int			fd;
 	char		*filename;
-	t_map		map_info;
-	t_textures	textures;
-	int			player_x;
-	int			player_y;
-	int			collected;
-	int			moves;
 	int			start_time;
+	int			game_over;
 }t_game;
 
-// bfs.c
+// dfs.c
 int		**init_visited(int height, int width);
-void	process_neighbors(t_game *g, t_queue *queue, int **visited, t_point p);
-void	free_visited(int **visited, int height);
-int		init_bfs_and_run(t_game *g, t_queue *queue, int **visited, char start_char);
-int		bfs(t_game *g, char start_char);
+void	dfs(t_game *g, int **visited, int x, int y);
+int		init_dfs_and_run(t_game *g, int start_x, int start_y);
 
 // map.c
 char	**load_map(t_game *g);
-int		draw_map(t_game *g);
 int		load_textures(t_game *g);
+int		draw_map(t_game *g);
 int		count_lines(t_game *g);
-void	free_map(char **map);
 
 // parsing.c
 int		validate_map(t_game *g);
@@ -119,22 +112,21 @@ int		check_elements(t_game *g);
 // player.c
 void	find_player(t_game *g);
 int		can_move(t_game *g, int new_x, int new_y);
+void	move_player(t_game *g, int dx, int dy);
 void	update_player_position(t_game *g, int new_x, int new_y);
 void	handle_endgame(t_game *g);
-void	move_player(t_game *g, int dx, int dy);
-
-// queue.c
-t_queue	*init_queue(void);
-void	enqueue(t_queue *queue, t_point pos);
-t_point	dequeue(t_queue *queue);
 
 // so_long.c
+void	init_game(t_game *g, char *filename);
+
+// utils.c
+void	free_map(char **grille);
+void	find_exit(t_game *g);
+void	free_visited(int **visited, int height);
+void	error_exit(char *msg, t_game *g);
 
 // window.c
 int		close_window(void *param);
 int		key_hook(int keycode, void *param);
-
-//void	display_stats(t_game *g);
 int		exit_hook(int keycode, void *param);
-
 #endif

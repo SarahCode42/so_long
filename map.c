@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/27 17:58:18 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:46:10 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,56 +24,23 @@ char	**load_map(t_game *g)
 	g->fd = open(g->filename, O_RDONLY);
 	if (g->fd < 0)
 		return (NULL);
-	g->map = malloc(sizeof(char *) * (lines + 1));
-	if (!g->map)
+	g->map.grille = malloc(sizeof(char *) * (lines + 1));
+	if (!g->map.grille)
 		return (close(g->fd), NULL);
 	i = 0;
 	while (i < lines && (line = get_next_line(g->fd)) != NULL)
 	{
-		g->map[i] = line;
+		g->map.grille[i] = line;
 		i++;
 	}
-	g->map[i] = NULL;
+	g->map.grille[i] = NULL;
 	close(g->fd);
 	if (i != lines)
-		return (free_map(g->map), NULL);
+		return (free_map(g->map.grille), NULL);
 	find_player(g);
-	g->moves = 0;
+	g->player.moves = 0;
 	g->start_time = time(NULL);
-	return (g->map);
-}
-
-int	draw_map(t_game *g)
-{
-	int		x;
-	int		y;
-	void	*img;
-
-	y = 0;
-	while (y < g->map_height)
-	{
-		x = 0;
-		while (x < g->map_width)
-		{
-			img = NULL;
-			if (g->map[y][x] == '1')
-				img = g->textures.wall;
-			else if (g->map[y][x] == 'P')
-				img = g->textures.player;
-			else if (g->map[y][x] == 'C')
-				img = g->textures.collectible;
-			else if (g->map[y][x] == 'E')
-				img = g->textures.exit;
-			else if (g->map[y][x] == '0')
-				img = g->textures.background;
-			if (img)
-				mlx_put_image_to_window
-					(g->mlx, g->win, img, x * TILE_SIZE, y * TILE_SIZE);
-			x++;
-		}
-		y++;
-	}
-	return (0);
+	return (g->map.grille);
 }
 
 int	load_textures(t_game *g)
@@ -97,8 +64,41 @@ int	load_textures(t_game *g)
 		|| !g->textures.collectible || !g->textures.exit
 		|| !g->textures.background)
 	{
-		printf("Error: Unable to load textures.\n");
+		write(2, "Error: Unable to load textures.\n", 32);
 		return (1);
+	}
+	return (0);
+}
+
+int	draw_map(t_game *g)
+{
+	int		x;
+	int		y;
+	void	*img;
+
+	y = 0;
+	while (y < g->map.height)
+	{
+		x = 0;
+		while (x < g->map.width)
+		{
+			img = NULL;
+			if (g->map.grille[y][x] == '1')
+				img = g->textures.wall;
+			else if (g->map.grille[y][x] == 'P')
+				img = g->textures.player;
+			else if (g->map.grille[y][x] == 'C')
+				img = g->textures.collectible;
+			else if (g->map.grille[y][x] == 'E')
+				img = g->textures.exit;
+			else if (g->map.grille[y][x] == '0')
+				img = g->textures.background;
+			if (img)
+				mlx_put_image_to_window
+					(g->mlx, g->window, img, x * TILE_SIZE, y * TILE_SIZE);
+			x++;
+		}
+		y++;
 	}
 	return (0);
 }
@@ -122,14 +122,4 @@ int	count_lines(t_game *g)
 	}
 	close(fd);
 	return (count);
-}
-
-void	free_map(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-		free(map[i++]);
-	free(map);
 }
