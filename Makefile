@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+         #
+#    By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/18 10:41:28 by jbensimo          #+#    #+#              #
-#    Updated: 2025/02/28 11:45:43 by jbensimo         ###   ########.fr        #
+#    Updated: 2025/03/01 23:13:02 by YonathanetS      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,11 +23,12 @@ OBJS = $(SRCS:.c=.o) $(GNL_OBJS)
 LIBFT = ./libft/libft.a
 FT_PRINTF = ./ft_printf/ft_printf.a
 
-MLX_DIR = ./minilibx-linux
+# MLX_DIR = ./minilibx-linux # LINUX
+MLX_DIR = ./minilibx-mac # MAC
 MLX_LIB = $(MLX_DIR)/libmlx.a
 MLX_INC = -I$(MLX_DIR)
-MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lbsd # LINUX
-# MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit # MAC
+# MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm -lbsd # LINUX
+MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit # MAC
 
 all: $(LIBFT) $(FT_PRINTF) $(MLX_LIB) $(NAME)
 

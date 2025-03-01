@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   window.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 15:19:33 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/01 23:14:42 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	close_window(t_game *g)
 		mlx_destroy_window(g->mlx, g->window);
 	if (g->mlx)
 	{
-		mlx_destroy_display(g->mlx);
+		//mlx_destroy_display(g->mlx);
 		free(g->mlx);
 	}
 	if (g->map.grille)

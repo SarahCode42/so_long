@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:44:20 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 15:19:36 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/02 00:29:16 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ void	free_visited(int **visited, int height)
 
 void	error_exit(char *msg, t_game *g)
 {
+    ft_printf("%s\n", msg);
 	if (g)
 		free_map(g->map.grille);
 	free(g);
 	write(2, msg, ft_strlen(msg));
-	exit(1);
+	exit(EXIT_FAILURE);
 }

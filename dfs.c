@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 20:58:56 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 15:19:46 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/02 00:29:17 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,56 @@ int	**init_visited(int height, int width)
 
 void	dfs(t_game *g, int **visited, int x, int y)
 {
-    if (x < 0 || x >= g->map.width || y < 0 || y >= g->map.height ||
-        g->map.grille[y][x] == '1' || visited[y][x])
-        return ;
-    visited[y][x] = 1;
-    dfs(g, visited, x + 1, y);
-    dfs(g, visited, x - 1, y);
-    dfs(g, visited, x, y + 1);
-    dfs(g, visited, x, y - 1);
+	if (x < 0 || x >= g->map.width || y < 0 || y >= g->map.height ||
+		g->map.grille[y][x] == '1' || visited[y][x])
+		return ;
+	visited[y][x] = 1;
+	dfs(g, visited, x + 1, y);
+	dfs(g, visited, x - 1, y);
+	dfs(g, visited, x, y + 1);
+	dfs(g, visited, x, y - 1);
 }
 
-int init_dfs_and_run(t_game *g, int start_x, int start_y)
+int	check_accessibility(t_game *g, int **visited)
 {
-    int **visited = init_visited(g->map.height, g->map.width);
-    if (!visited)
-        return (0);
-    dfs(g, visited, start_x, start_y);
-    free_visited(visited, g->map.height);
+    int	x;
+    int	y;
+
+    y = 0;
+    while (y < g->map.height)
+    {
+        x = 0;
+        while (x < g->map.width)
+        {
+            if (g->map.grille[y][x] == 'C' || g->map.grille[y][x] == 'E')
+            {
+                if (!visited[y][x])
+                {
+                    ft_printf("Element %c inaccesssible at (%d, %d)\n", g->map.grille[y][x], x, y);
+                    return (0);
+                }
+                else
+                {
+                    ft_printf("Element %c accessible at (%d, %d)\n", g->map.grille[y][x], x, y);
+                }
+            }
+            x++;
+        }
+        y++;
+    }
     return (1);
+}
+
+int	init_dfs_and_run(t_game *g, int start_x, int start_y)
+{
+	int	**visited;
+	int	accessible;
+
+	visited = init_visited(g->map.height, g->map.width);
+	if (!visited)
+		return (0);
+	dfs(g, visited, start_x, start_y);
+	accessible = check_accessibility(g, visited);
+	free_visited(visited, g->map.height);
+	return (accessible);
 }

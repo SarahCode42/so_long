@@ -1,0 +1,12 @@
+1. fabriauer les mechants F
+2. esc ne marche pas au depart
+3. parsing ne marche pas collectibles non accessibles pas de E...
+4. les touches ne marchent pas en continu
+
+autres
+afficher GAME OVER
+timer
+musique
+afficher level
+faire bouger les personnage
+faire evcoluer le graphisme

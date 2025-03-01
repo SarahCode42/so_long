@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 15:19:31 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/02 00:29:09 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,27 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <time.h>
-# include <mlx.h>
+//# include "minilibx-linux/mlx.h"
+# include "minilibx-mac/mlx.h"
 # include "libft/libft.h"
 # include "ft_printf/ft_printf.h"
 # include "GetNextLine/get_next_line.h"
 
 # define TILE_SIZE 32
 
-// Keyboard (Linux)
+/*// Keyboard (Linux)
 # define ESC 65307
 # define W 119
 # define S 115
 # define A 97
-# define D 100
+# define D 100*/
 
-/*// Keyboard (Mac)
+// Keyboard (Mac)
 # define ESC 53
 # define W 13
 # define S 1
 # define A 0
 # define D 2
-#endif*/
 
 // Positions
 typedef struct s_point
@@ -96,6 +96,7 @@ typedef struct s_game
 // dfs.c
 int		**init_visited(int height, int width);
 void	dfs(t_game *g, int **visited, int x, int y);
+int		check_accessibility(t_game *g, int **visited);
 int		init_dfs_and_run(t_game *g, int start_x, int start_y);
 
 // map.c
