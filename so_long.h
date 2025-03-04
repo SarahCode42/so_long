@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/02 00:29:09 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/04 15:56:45 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,9 @@ typedef struct s_point
 {
 	int	x;
 	int	y;
+	int		moves;
+	int		collected;
 }t_point;
-
-// Map
-typedef struct s_map
-{
-	char	**grille;
-	int		width;
-	int		height;
-	int		player_count;
-	int		exit_count;
-	int		collectible_count;
-}t_map;
 
 // Textures
 typedef struct s_textures
@@ -70,23 +61,34 @@ typedef struct s_textures
 }t_textures;
 
 // Player
-typedef struct s_player
+/*typedef struct s_player
 {
-	int		x;
-	int		y;
-	int		moves;
-	int		collected;
-}t_player;
+	//int		x;
+	//int		y;
+
+}t_player;*/
+
+// Parsing
+typedef struct s_parsing
+{
+	char	**map;
+	int		**visited;
+	int		width;
+	int		height;
+	int		player_count;
+	int		exit_count;
+	int		collect_count;
+}t_parsing;
 
 // Game
 typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
-	t_map		map;
 	t_textures	textures;
-	t_player	player;
+	t_point		player;
 	t_point		exit;
+	t_parsing	pars;
 	int			fd;
 	char		*filename;
 	int			start_time;
@@ -94,37 +96,45 @@ typedef struct s_game
 }t_game;
 
 // dfs.c
-int		**init_visited(int height, int width);
-void	dfs(t_game *g, int **visited, int x, int y);
-int		check_accessibility(t_game *g, int **visited);
-int		init_dfs_and_run(t_game *g, int start_x, int start_y);
+void	init_visited(t_game *g);
+void	dfs_recurs(t_game *g, int x, int y);
+void		check_accessibility(t_game *g);
+int		dfs(t_game *g);
+
+// free.c
+void	free_map(t_game *g);
+void	free_visited(t_game *g);
+
+// map_utils.c
+void	count_height(t_game *g);
+int		count_width(t_game *g, int i);
+void	find_player(t_game *g, int i, int j);
+void	find_exit(t_game *g, int i, int j);
 
 // map.c
-char	**load_map(t_game *g);
+void	load_map(t_game *g);
 int		load_textures(t_game *g);
 int		draw_map(t_game *g);
-int		count_lines(t_game *g);
 
 // parsing.c
-int		validate_map(t_game *g);
 int		check_walls(t_game *g);
 int		check_elements(t_game *g);
+void	parsing(t_game *g);
 
 // player.c
-void	find_player(t_game *g);
+void	find_player(t_game *g, int i, int j);
 int		can_move(t_game *g, int new_x, int new_y);
 void	move_player(t_game *g, int dx, int dy);
 void	update_player_position(t_game *g, int new_x, int new_y);
 void	handle_endgame(t_game *g);
 
 // so_long.c
-void	init_game(t_game *g, char *filename);
+//void	init_game(t_game *g, char *filename);
 
 // utils.c
-void	free_map(char **grille);
-void	find_exit(t_game *g);
-void	free_visited(int **visited, int height);
 void	error_exit(char *msg, t_game *g);
+int		open_file(t_game *g);
+int		close_file(t_game *g, int lines_read, int total_lines);
 
 // window.c
 void	destroy_textures(t_game *g);

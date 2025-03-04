@@ -3,44 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/02/28 15:19:14 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:56:43 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**load_map(t_game *g)
+void	load_map(t_game *g)
 {
 	char	*line;
 	int		i;
-	int		lines;
 
-	lines = count_lines(g);
-	if (lines <= 0)
-		return (NULL);
-	g->fd = open(g->filename, O_RDONLY);
-	if (g->fd < 0)
-		return (NULL);
-	g->map.grille = malloc(sizeof(char *) * (lines + 1));
-	if (!g->map.grille)
-		return (close(g->fd), NULL);
+	count_height(g);
+	if (g->pars.height <= 0)
+		return ;
+	g->fd = open_file(g);
+    g->pars.map = malloc(sizeof(char *) * (g->pars.height + 1));
+	if (!g->pars.map)
+		error_exit("Error: Failed to allocate memory for map\n", g);
 	i = 0;
-	while (i < lines && (line = get_next_line(g->fd)) != NULL)
+	line = get_next_line(g->fd);
+	//ft_printf("i = %d et height = %d et line = %s et fd = %d et filename = %s\n", i, g->pars.height, line, g->fd, g->filename);
+	while (i < g->pars.height && line)
 	{
-		g->map.grille[i] = line;
+		g->pars.map[i] = line;
+		line = get_next_line(g->fd);
 		i++;
 	}
-	g->map.grille[i] = NULL;
-	close(g->fd);
-	if (i != lines)
-		return (free_map(g->map.grille), NULL);
-	find_player(g);
-	g->player.moves = 0;
-	g->start_time = time(NULL);
-	return (g->map.grille);
+	//ft_printf("Je passe ici!\n");
+	g->pars.map[i] = NULL;
+	//ft_printf("i = %d et height = %d\n", i, g->pars.height);
+	if (i < g->pars.height)
+		error_exit("Error: Map file is incomplete\n", g);
 }
 
 int	load_textures(t_game *g)
@@ -76,21 +73,21 @@ int	draw_map(t_game *g)
 	void	*img;
 
 	y = 0;
-	while (y < g->map.height)
+	while (y < g->pars.height)
 	{
 		x = 0;
-		while (x < g->map.width)
+		while (x < g->pars.width)
 		{
 			img = NULL;
-			if (g->map.grille[y][x] == '1')
+			if (g->pars.map[y][x] == '1')
 				img = g->textures.wall;
-			else if (g->map.grille[y][x] == 'P')
+			else if (g->pars.map[y][x] == 'P')
 				img = g->textures.player;
-			else if (g->map.grille[y][x] == 'C')
+			else if (g->pars.map[y][x] == 'C')
 				img = g->textures.collectible;
-			else if (g->map.grille[y][x] == 'E')
+			else if (g->pars.map[y][x] == 'E')
 				img = g->textures.exit;
-			else if (g->map.grille[y][x] == '0')
+			else if (g->pars.map[y][x] == '0')
 				img = g->textures.background;
 			if (img)
 				mlx_put_image_to_window
@@ -102,23 +99,3 @@ int	draw_map(t_game *g)
 	return (0);
 }
 
-int	count_lines(t_game *g)
-{
-	int		count;
-	int		fd;
-	char	*line;
-
-	count = 0;
-	fd = open(g->filename, O_RDONLY);
-	if (fd == -1)
-		return (-1);
-	line = get_next_line(fd);
-	while (line)
-	{
-		free(line);
-		count++;
-		line = get_next_line(fd);
-	}
-	close(fd);
-	return (count);
-}

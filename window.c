@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/01 23:14:42 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/04 15:29:04 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ int	close_window(t_game *g)
 		mlx_destroy_window(g->mlx, g->window);
 	if (g->mlx)
 	{
-		//mlx_destroy_display(g->mlx);
+		//mlx_destroy_display(g->mlx); //linux
 		free(g->mlx);
 	}
-	if (g->map.grille)
-		free_map(g->map.grille);
+	if (g->pars.map)
+		free_map(g);
 	exit(0);
 }
 
@@ -51,10 +51,7 @@ int key_hook(int keycode, void *param)
     if (g->game_over)
     {
         if (keycode == ESC)
-		{
             close_window(g);
-			
-		}
         return (0);
     }
 	else if (keycode == W)

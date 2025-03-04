@@ -6,89 +6,74 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 20:58:56 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/02 00:29:17 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/04 15:27:14 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	**init_visited(int height, int width)
+void	init_visited(t_game *g)
 {
-	int	**visited;
 	int	i;
 
-	visited = malloc(height * sizeof(int *));
-	if (!visited)
-		return (NULL);
+	g->pars.visited = ft_calloc(g->pars.height, sizeof(int *));
+	if (!g->pars.visited)
+		return ;
 	i = 0;
-	while (i < height)
+	while (i < g->pars.height)
 	{
-		visited[i] = malloc(width * sizeof(int));
-		if (!visited[i])
+		g->pars.visited[i] = ft_calloc(g->pars.width, sizeof(int));
+		if (!g->pars.visited[i])
 		{
 			while (--i >= 0)
-				free(visited[i]);
-			free(visited);
-			return (NULL);
+				free(g->pars.visited[i]);
+			free(g->pars.visited);
+			return ;
 		}
-		ft_memset(visited[i], 0, width * sizeof(int));
 		i++;
 	}
-	return (visited);
 }
 
-void	dfs(t_game *g, int **visited, int x, int y)
+void	dfs_recurs(t_game *g, int x, int y)
 {
-	if (x < 0 || x >= g->map.width || y < 0 || y >= g->map.height ||
-		g->map.grille[y][x] == '1' || visited[y][x])
+	if (x < 0 || x >= g->pars.width || y < 0 || y >= g->pars.height ||
+		g->pars.map[y][x] == '1' || g->pars.visited[y][x])
 		return ;
-	visited[y][x] = 1;
-	dfs(g, visited, x + 1, y);
-	dfs(g, visited, x - 1, y);
-	dfs(g, visited, x, y + 1);
-	dfs(g, visited, x, y - 1);
+	g->pars.visited[y][x] = 1;
+	dfs_recurs(g, x + 1, y);
+	dfs_recurs(g, x - 1, y);
+	dfs_recurs(g, x, y + 1);
+	dfs_recurs(g,x, y - 1);
 }
 
-int	check_accessibility(t_game *g, int **visited)
+void	check_accessibility(t_game *g)
 {
     int	x;
     int	y;
 
+	if (g->pars.visited[g->player.y][g->player.x] == 0)
+		error_exit("the player is blocked\n",g);
+	if (g->pars.visited[g->exit.y][g->exit.x] == 0)
+		error_exit("the exit is not accessible\n", g);
     y = 0;
-    while (y < g->map.height)
+    while (y < g->pars.height)
     {
         x = 0;
-        while (x < g->map.width)
+        while (x < g->pars.width)
         {
-            if (g->map.grille[y][x] == 'C' || g->map.grille[y][x] == 'E')
-            {
-                if (!visited[y][x])
-                {
-                    ft_printf("Element %c inaccesssible at (%d, %d)\n", g->map.grille[y][x], x, y);
-                    return (0);
-                }
-                else
-                {
-                    ft_printf("Element %c accessible at (%d, %d)\n", g->map.grille[y][x], x, y);
-                }
-            }
+			if (g->pars.map[y][x] == 'C' && g->pars.visited[y][x] == 0)
+				error_exit("Not all collectibles are accessible\n", g);
             x++;
         }
         y++;
     }
-    return (1);
 }
 
-int	init_dfs_and_run(t_game *g, int start_x, int start_y)
+int	dfs(t_game *g)
 {
-	int	**visited;
-	int	accessible;
-
-	visited = init_visited(g->map.height, g->map.width);
-	if (!visited)
-		return (0);
-	dfs(g, visited, start_x, start_y);
-	accessible = check_accessibility(g, visited);
-	free_visited(visited, g->map.height);
-	return (accessible);
+	init_visited(g);
+	dfs_recurs(g, g->player.x, g->player.y);
+	check_accessibility(g);
+	free_visited(g);
+	return (1);
 }
