@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:37:36 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/04 16:25:57 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/05 00:06:31 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ int	main(int argc, char **argv)
 		error_exit("Error: Failed to create window\n", g);
 	if (load_textures(g))
 		error_exit("Error: Failed to load textures\n", g);
-		draw_map(g);
+	g->start_time = time(NULL);
+	draw_map(g);
 	mlx_hook(g->window, 17, 0, close_window, g);
 	mlx_key_hook(g->window, key_hook, g);
 	mlx_loop(g->mlx);
-	g->start_time = time(NULL);
 	close(g->fd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/04 15:56:45 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/04 23:02:31 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void	find_exit(t_game *g, int i, int j);
 // map.c
 void	load_map(t_game *g);
 int		load_textures(t_game *g);
+void	destroy_textures(t_game *g);
 int		draw_map(t_game *g);
 
 // parsing.c
@@ -137,7 +138,6 @@ int		open_file(t_game *g);
 int		close_file(t_game *g, int lines_read, int total_lines);
 
 // window.c
-void	destroy_textures(t_game *g);
 int		close_window(t_game *g);
 int		key_hook(int keycode, void *param);
 int		exit_hook(int keycode, void *param);

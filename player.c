@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:34:05 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/04 15:27:14 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/05 00:06:29 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	can_move(t_game *g, int new_x, int new_y)
 		return (0);
 	return (1);
 }
-
 
 void	move_player(t_game *g, int dx, int dy)
 {
@@ -47,7 +46,6 @@ void	move_player(t_game *g, int dx, int dy)
 	}
 	draw_map(g);
 }
-
 
 void	update_player_position(t_game *g, int new_x, int new_y)
 {
@@ -77,5 +75,4 @@ void handle_endgame(t_game *g)
         g->pars.height * TILE_SIZE / 2, 0x0000FF, "CONGRATULATIONS!");
     mlx_string_put(g->mlx, g->window, g->pars.width * TILE_SIZE / 2 - 50,
         g->pars.height * TILE_SIZE / 2 + 30, 0x0000FF, "Press ESC to exit.");
-    mlx_key_hook(g->window, exit_hook, g);
 }

@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/04 15:56:43 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/05 00:06:32 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,13 @@ void	load_map(t_game *g)
 		error_exit("Error: Failed to allocate memory for map\n", g);
 	i = 0;
 	line = get_next_line(g->fd);
-	//ft_printf("i = %d et height = %d et line = %s et fd = %d et filename = %s\n", i, g->pars.height, line, g->fd, g->filename);
 	while (i < g->pars.height && line)
 	{
 		g->pars.map[i] = line;
 		line = get_next_line(g->fd);
 		i++;
 	}
-	//ft_printf("Je passe ici!\n");
 	g->pars.map[i] = NULL;
-	//ft_printf("i = %d et height = %d\n", i, g->pars.height);
 	if (i < g->pars.height)
 		error_exit("Error: Map file is incomplete\n", g);
 }
@@ -64,6 +61,22 @@ int	load_textures(t_game *g)
 	if (!g->textures.background)
 		return (destroy_textures(g), write(2, "Error: Unable to load background texture.\n", 41), 1);
 	return (0);
+}
+
+void	destroy_textures(t_game *g)
+{
+	if (g->textures.wall)
+		mlx_destroy_image(g->mlx, g->textures.wall);
+	if (g->textures.floor)
+		mlx_destroy_image(g->mlx, g->textures.floor);
+	if (g->textures.player)
+		mlx_destroy_image(g->mlx, g->textures.player);
+	if (g->textures.collectible)
+		mlx_destroy_image(g->mlx, g->textures.collectible);
+	if (g->textures.exit)
+		mlx_destroy_image(g->mlx, g->textures.exit);
+	if (g->textures.background)
+		mlx_destroy_image(g->mlx, g->textures.background);
 }
 
 int	draw_map(t_game *g)

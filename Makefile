@@ -6,7 +6,7 @@
 #    By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/18 10:41:28 by jbensimo          #+#    #+#              #
-#    Updated: 2025/03/04 15:10:46 by YonathanetS      ###   ########.fr        #
+#    Updated: 2025/03/04 23:02:25 by YonathanetS      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,6 @@ fclean: clean
 	rm -f $(NAME)
 	$(MAKE) -C libft fclean
 	$(MAKE) -C ft_printf fclean
-	rm -f $(MLX_LIB)
 
 re: fclean all
 

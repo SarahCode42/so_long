@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:09:55 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/04 15:27:14 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/05 00:06:34 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,5 @@ void	parsing(t_game *g)
         error_exit("Error: Map must have 1 'P', 1 'E', and at least 1 'C'", g);
     if (!dfs(g))
         error_exit("Error: Not all collectibles are accessible", g);
+	free_visited(g);
 }
