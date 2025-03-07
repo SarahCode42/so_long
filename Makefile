@@ -6,7 +6,7 @@
 #    By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/18 10:41:28 by jbensimo          #+#    #+#              #
-#    Updated: 2025/03/04 23:02:25 by YonathanetS      ###   ########.fr        #
+#    Updated: 2025/03/07 12:25:24 by YonathanetS      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = so_long
 CC = cc
 FLAGS = -Wall -Wextra -Werror
 
-SRCS = dfs.c free.c map.c map_utils.c parsing.c player.c so_long.c utils.c window.c
+SRCS = dfs.c free.c key.c map.c map_utils.c parsing.c player.c so_long.c utils.c
 GNL_SRCS = ./GetNextLine/get_next_line.c ./GetNextLine/get_next_line_utils.c
 
 GNL_OBJS = $(GNL_SRCS:.c=.o)

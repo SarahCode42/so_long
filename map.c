@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/05 00:06:32 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/07 15:02:23 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	load_map(t_game *g)
 	g->fd = open_file(g);
     g->pars.map = malloc(sizeof(char *) * (g->pars.height + 1));
 	if (!g->pars.map)
-		error_exit("Error: Failed to allocate memory for map\n", g);
+		error_exit("Failed to allocate memory for map\n", g);
 	i = 0;
 	line = get_next_line(g->fd);
 	while (i < g->pars.height && line)
@@ -34,7 +34,7 @@ void	load_map(t_game *g)
 	}
 	g->pars.map[i] = NULL;
 	if (i < g->pars.height)
-		error_exit("Error: Map file is incomplete\n", g);
+		error_exit("Map file is incomplete\n", g);
 }
 
 int	load_textures(t_game *g)
@@ -44,22 +44,22 @@ int	load_textures(t_game *g)
 
 	g->textures.wall = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
 	if (!g->textures.wall)
-		return (write(2, "Error: Unable to load wall texture.\n", 36), 1);
+		return (write(2, "Unable to load wall texture.\n", 36), 1);
 	g->textures.floor = mlx_xpm_file_to_image(g->mlx, "textures/floor.xpm", &w, &h);
 	if (!g->textures.floor)
-		return (destroy_textures(g), write(2, "Error: Unable to load floor texture.\n", 37), 1);
+		return (destroy_textures(g), write(2, "Unable to load floor texture.\n", 37), 1);
 	g->textures.player = mlx_xpm_file_to_image(g->mlx, "textures/player.xpm", &w, &h);
 	if (!g->textures.player)
-		return (destroy_textures(g), write(2, "Error: Unable to load player texture.\n", 38), 1);
+		return (destroy_textures(g), write(2, "Unable to load player texture.\n", 38), 1);
 	g->textures.collectible = mlx_xpm_file_to_image(g->mlx, "textures/collectible.xpm", &w, &h);
 	if (!g->textures.collectible)
-		return (destroy_textures(g), write(2, "Error: Unable to load collectible texture.\n", 42), 1);
+		return (destroy_textures(g), write(2, "Unable to load collectible texture.\n", 42), 1);
 	g->textures.exit = mlx_xpm_file_to_image(g->mlx, "textures/exit.xpm", &w, &h);
 	if (!g->textures.exit)
-		return (destroy_textures(g), write(2, "Error: Unable to load exit texture.\n", 35), 1);
+		return (destroy_textures(g), write(2, "Unable to load exit texture.\n", 35), 1);
 	g->textures.background = mlx_xpm_file_to_image(g->mlx, "textures/background.xpm", &w, &h);
 	if (!g->textures.background)
-		return (destroy_textures(g), write(2, "Error: Unable to load background texture.\n", 41), 1);
+		return (destroy_textures(g), write(2, "Unable to load background texture.\n", 41), 1);
 	return (0);
 }
 
@@ -110,5 +110,21 @@ int	draw_map(t_game *g)
 		y++;
 	}
 	return (0);
+}
+
+void draw_moves(t_game *g)
+{
+    char *moves_str;
+    char *display_str;
+
+    moves_str = ft_itoa(g->player.moves);
+    if (!moves_str)
+        return;
+    display_str = ft_strjoin("Moves: ", moves_str);
+    free(moves_str);
+    if (!display_str)
+        return;
+    mlx_string_put(g->mlx, g->window, 10, 10, 0x0000FF, display_str);
+    free(display_str);
 }
 

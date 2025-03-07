@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 20:58:56 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/04 15:27:14 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/07 14:25:16 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	check_accessibility(t_game *g)
     int	y;
 
 	if (g->pars.visited[g->player.y][g->player.x] == 0)
-		error_exit("the player is blocked\n",g);
+		error_exit("Player is blocked\n",g);
 	if (g->pars.visited[g->exit.y][g->exit.x] == 0)
-		error_exit("the exit is not accessible\n", g);
+		error_exit("Exit is not accessible\n", g);
     y = 0;
     while (y < g->pars.height)
     {

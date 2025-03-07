@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/04 23:02:31 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/07 15:02:20 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,6 @@ typedef struct s_textures
 	void	*background;
 }t_textures;
 
-// Player
-/*typedef struct s_player
-{
-	//int		x;
-	//int		y;
-
-}t_player;*/
-
 // Parsing
 typedef struct s_parsing
 {
@@ -93,12 +85,15 @@ typedef struct s_game
 	char		*filename;
 	int			start_time;
 	int			game_over;
+	int			key_pressed;
+	int			last_move_time;
+	int			level;
 }t_game;
 
 // dfs.c
 void	init_visited(t_game *g);
 void	dfs_recurs(t_game *g, int x, int y);
-void		check_accessibility(t_game *g);
+void	check_accessibility(t_game *g);
 int		dfs(t_game *g);
 
 // free.c
@@ -116,6 +111,7 @@ void	load_map(t_game *g);
 int		load_textures(t_game *g);
 void	destroy_textures(t_game *g);
 int		draw_map(t_game *g);
+void	draw_moves(t_game *g);
 
 // parsing.c
 int		check_walls(t_game *g);
@@ -127,7 +123,9 @@ void	find_player(t_game *g, int i, int j);
 int		can_move(t_game *g, int new_x, int new_y);
 void	move_player(t_game *g, int dx, int dy);
 void	update_player_position(t_game *g, int new_x, int new_y);
-void	handle_endgame(t_game *g);
+//void	handle_endgame(t_game *g);
+void next_level(t_game *g);
+
 
 // so_long.c
 //void	init_game(t_game *g, char *filename);
@@ -136,10 +134,13 @@ void	handle_endgame(t_game *g);
 void	error_exit(char *msg, t_game *g);
 int		open_file(t_game *g);
 int		close_file(t_game *g, int lines_read, int total_lines);
-
-// window.c
 int		close_window(t_game *g);
-int		key_hook(int keycode, void *param);
-int		exit_hook(int keycode, void *param);
+
+// key.c
+int		key_press(int keycode, t_game *g);
+int		key_release(int keycode, t_game *g);
+int		get_time();
+int		key_loop(t_game *g);
+void	key(t_game *g);
 
 #endif
