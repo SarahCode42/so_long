@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:44:20 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/07 13:51:06 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/07 17:48:33 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,21 @@ int	close_window(t_game *g)
 	destroy_textures(g);
 	if (g->window)
 		mlx_destroy_window(g->mlx, g->window);
-	if (g->mlx)
-	{
-		//mlx_destroy_display(g->mlx); //linux
-		free(g->mlx);
-	}
 	if (g->pars.map)
 		free_map(g);
-	exit(0);
+	if (g->pars.visited)
+		free_visited(g);
+	if (g->mlx)
+	{
+		#ifdef __linux__
+			mlx_destroy_display(g->mlx);
+		#endif
+		free(g->mlx);
+	}
+	#ifdef __APPLE__
+		exit(0);  // MacOS
+	#else
+		mlx_loop_end(g->mlx);  // Linux
+	#endif
+	return (0);
 }

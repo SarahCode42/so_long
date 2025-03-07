@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:39:31 by YonathanetS       #+#    #+#             */
-/*   Updated: 2025/03/04 15:54:23 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/07 17:49:12 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,19 @@ void	count_height(t_game *g)
 {
 	char	*line;
 
-	open_file(g);
+	if (open_file(g) < 0)
+		error_exit("Failed to open map file\n", g);
+	g->pars.height = 0;
 	line = get_next_line(g->fd);
 	while (line)
 	{
-		free(line);
 		g->pars.height++;
+		free(line);
 		line = get_next_line(g->fd);
 	}
 	close(g->fd);
-	g->fd = -1;
+	if (g->pars.height == 0)
+		error_exit("Map file is empty\n", g);
 }
 
 int	count_width(t_game *g, int i)

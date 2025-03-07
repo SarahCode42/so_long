@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:37:36 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/07 14:59:58 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/07 18:05:18 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@ int	main(int argc, char **argv)
 		return (write(2, "Usage: ./so_long map.ber\n", 25), 1);
 	g = ft_calloc(1, sizeof(t_game));
 	if (!g)
-		return (write(2, "Memory allocation failed\n", 33), 1);
+		return (write(2, "Memory allocation failed\n", 26), 1);
 	g->filename = argv[1];
 	g->mlx = mlx_init();
 	if (!g->mlx)
-		return (write(2, "Failed to initialize MLX\n", 32), 1);
-	g->level = 1;
+		return (free(g), write(2, "Failed to initialize MLX\n", 26), 1);
 	parsing(g);
 	g->window = mlx_new_window(g->mlx, g->pars.width * TILE_SIZE, g->pars.height * TILE_SIZE, "so_long");
 	if (!g->window)
@@ -36,6 +35,7 @@ int	main(int argc, char **argv)
 	draw_map(g);
 	key(g);
 	mlx_loop(g->mlx);
-	close(g->fd);
+	if (g->fd >= 0)
+		close(g->fd);
 	return (0);
 }

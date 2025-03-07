@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/07 15:02:20 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/07 18:05:27 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,12 +123,6 @@ void	find_player(t_game *g, int i, int j);
 int		can_move(t_game *g, int new_x, int new_y);
 void	move_player(t_game *g, int dx, int dy);
 void	update_player_position(t_game *g, int new_x, int new_y);
-//void	handle_endgame(t_game *g);
-void next_level(t_game *g);
-
-
-// so_long.c
-//void	init_game(t_game *g, char *filename);
 
 // utils.c
 void	error_exit(char *msg, t_game *g);

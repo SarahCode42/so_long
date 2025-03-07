@@ -6,7 +6,7 @@
 /*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:09:55 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/07 14:58:11 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/07 18:05:04 by YonathanetS      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ int	check_walls(t_game *g)
 	while (i < g->pars.height)
 	{
 		if (count_width(g, i) != g->pars.width)
-			return (write(2, "Map must be rectangular\n", 31), 0);
+			error_exit("Map must be rectangular\n", g);
 		if (g->pars.map[i][0] != '1' || g->pars.map[i][g->pars.width - 1] != '1')
-			return (write(2, "Map must be enclosed by walls\n", 37), 0);
+			error_exit("Map must be enclosed by walls\n", g);
 		i++;
 	}
 	j = 0;
 	while (j < g->pars.width)
 	{
 		if (g->pars.map[0][j] != '1' || g->pars.map[g->pars.height - 1][j] != '1')
-			return (write(2, "Map must be enclosed by walls\n", 37), 0);
+			error_exit("Map must be enclosed by walls\n", g);
 		j++;
 	}
 	return (1);
@@ -79,13 +79,12 @@ void	parsing(t_game *g)
 		error_exit("Map file must have a .ber extension\n", g);
 	g->fd = open_file(g);
 	load_map(g);
-    if (!g->pars.map)
-        error_exit("Map is empty", g);
-    if (!check_walls(g))
-        error_exit("Map must be enclosed by walls", g);
-    if (!check_elements(g))
-        error_exit("Map must have 1 'P', 1 'E', and at least 1 'C'", g);
-    if (!dfs(g))
-        error_exit("Not all collectibles are accessible", g);
+	if (!g->pars.map)
+		error_exit("Map is empty\n", g);
+	check_walls(g);
+	if (!check_elements(g))
+		error_exit("Map must have 1 'P', 1 'E', and at least 1 'C'\n", g);
+	if (!dfs(g))
+		error_exit("Not all collectibles are accessible\n", g);
 	free_visited(g);
 }
