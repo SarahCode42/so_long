@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
+/*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/07 17:49:43 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/16 15:46:28 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,65 +18,61 @@ void	load_map(t_game *g)
 	int		i;
 
 	count_height(g);
-	if (g->pars.height <= 0)
-		return ;
+	if_not((void *)(long)(g->parsing->height > 0), "Invalid map height\n", g, free_parsing);
 	g->fd = open_file(g);
-    g->pars.map = malloc(sizeof(char *) * (g->pars.height + 1));
-	if (!g->pars.map)
-		error_exit("Failed to allocate memory for map\n", g);
+	g->parsing->map = malloc(sizeof(char *) * (g->parsing->height + 1));
+	if_not(g->parsing->map, "Failed to allocate memory for map\n", g, free_parsing);
 	i = 0;
 	line = get_next_line(g->fd);
-	while (i < g->pars.height && line)
+	while (i < g->parsing->height && line)
 	{
-		g->pars.map[i] = line;
+		g->parsing->map[i] = line;
 		line = get_next_line(g->fd);
 		i++;
 	}
-	g->pars.map[i] = NULL;
-	if (i < g->pars.height)
-		error_exit("Map file is incomplete\n", g);
+	g->parsing->map[i] = NULL;
+	if_not((void *)(long)(i == g->parsing->height), "Map file is incomplete\n", g, free_parsing);
 }
 
-int	load_textures(t_game *g)
+t_textures	*load_textures(t_game *g)
 {
 	int	w;
 	int	h;
 
-	g->textures.wall = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
-	if (!g->textures.wall)
-		return (write(2, "Unable to load wall texture.\n", 36), 1);
-	g->textures.floor = mlx_xpm_file_to_image(g->mlx, "textures/floor.xpm", &w, &h);
-	if (!g->textures.floor)
-		return (destroy_textures(g), write(2, "Unable to load floor texture.\n", 37), 1);
-	g->textures.player = mlx_xpm_file_to_image(g->mlx, "textures/player.xpm", &w, &h);
-	if (!g->textures.player)
-		return (destroy_textures(g), write(2, "Unable to load player texture.\n", 38), 1);
-	g->textures.collectible = mlx_xpm_file_to_image(g->mlx, "textures/collectible.xpm", &w, &h);
-	if (!g->textures.collectible)
-		return (destroy_textures(g), write(2, "Unable to load collectible texture.\n", 42), 1);
-	g->textures.exit = mlx_xpm_file_to_image(g->mlx, "textures/exit.xpm", &w, &h);
-	if (!g->textures.exit)
-		return (destroy_textures(g), write(2, "Unable to load exit texture.\n", 35), 1);
-	g->textures.background = mlx_xpm_file_to_image(g->mlx, "textures/background.xpm", &w, &h);
-	if (!g->textures.background)
-		return (destroy_textures(g), write(2, "Unable to load background texture.\n", 41), 1);
-	return (0);
+	g->textures = ft_calloc(1, sizeof(t_textures));
+	if_not(g->textures, "Memory allocation failed\n", g, free_game);
+
+	g->textures->wall = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
+	if_not(g->textures->wall, "Unable to load wall texture.\n", g, free_textures);
+
+	g->textures->floor = mlx_xpm_file_to_image(g->mlx, "textures/floor.xpm", &w, &h);
+	if_not(g->textures->floor, "Unable to load floor texture.\n", g, free_textures);
+
+	g->textures->player = mlx_xpm_file_to_image(g->mlx, "textures/player.xpm", &w, &h);
+	if_not(g->textures->player, "Unable to load player texture.\n", g, free_textures);
+
+	g->textures->collectible = mlx_xpm_file_to_image(g->mlx, "textures/collectible.xpm", &w, &h);
+	if_not(g->textures->collectible, "Unable to load collectible texture.\n", g, free_textures);
+
+	g->textures->exit = mlx_xpm_file_to_image(g->mlx, "textures/exit.xpm", &w, &h);
+	if_not(g->textures->exit, "Unable to load exit texture.\n", g, free_textures);
+
+	return (g->textures);
 }
 
-void	destroy_textures(t_game *g)
+void	*get_texture(t_game *g, char c)
 {
-	if (g->textures.wall)
-		mlx_destroy_image(g->mlx, g->textures.wall);
-	if (g->textures.floor)
-		mlx_destroy_image(g->mlx, g->textures.floor);
-	if (g->textures.player)
-		mlx_destroy_image(g->mlx, g->textures.player);
-	if (g->textures.collectible)
-		mlx_destroy_image(g->mlx, g->textures.collectible);
-	if (g->textures.exit)
-		mlx_destroy_image(g->mlx, g->textures.exit);
-	if (g->textures.background)
-		mlx_destroy_image(g->mlx, g->textures.background);
+	if (c == '1')
+		return (g->textures->wall);
+	if (c == 'P')
+		return (g->textures->player);
+	if (c == 'C')
+		return (g->textures->collectible);
+	if (c == 'E')
+		return (g->textures->exit);
+	if (c == '0')
+		return (g->textures->floor);
+	return (NULL);
 }
 
 int	draw_map(t_game *g)
@@ -86,25 +82,16 @@ int	draw_map(t_game *g)
 	void	*img;
 
 	y = 0;
-	while (y < g->pars.height)
+	while (y < g->parsing->height)
 	{
 		x = 0;
-		while (x < g->pars.width)
+		while (x < g->parsing->width)
 		{
-			img = NULL;
-			if (g->pars.map[y][x] == '1')
-				img = g->textures.wall;
-			else if (g->pars.map[y][x] == 'P')
-				img = g->textures.player;
-			else if (g->pars.map[y][x] == 'C')
-				img = g->textures.collectible;
-			else if (g->pars.map[y][x] == 'E')
-				img = g->textures.exit;
-			else if (g->pars.map[y][x] == '0')
-				img = g->textures.background;
-			if (img)
-				mlx_put_image_to_window
-					(g->mlx, g->window, img, x * TILE_SIZE, y * TILE_SIZE);
+			img = get_texture(g, g->parsing->map[y][x]);
+			if_not(img, "Map contains an unknown element\n", g, free_game);
+			if_not((void *)(long)(mlx_put_image_to_window(g->mlx, g->window, img, x * TILE_SIZE, y * TILE_SIZE) != -1),
+				"Failed to render image\n", g, free_game);
+	 
 			x++;
 		}
 		y++;
@@ -118,13 +105,10 @@ void draw_moves(t_game *g)
     char *display_str;
 
     moves_str = ft_itoa(g->player.moves);
-    if (!moves_str)
-        return;
+    if_not(moves_str, "Failed to allocate memory for moves string\n", g, NULL);
     display_str = ft_strjoin("Moves: ", moves_str);
     free(moves_str);
-    if (!display_str)
-        return;
+    if_not(display_str, "Failed to allocate memory for display string\n", g, NULL);
     mlx_string_put(g->mlx, g->window, 10, 10, 0x0000FF, display_str);
     free(display_str);
 }
-

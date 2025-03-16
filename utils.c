@@ -3,68 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
+/*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:44:20 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/07 17:48:33 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/16 15:46:51 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	error_exit(char *msg, t_game *g)
+void	error_exit(char *msg)
 {
 	write(2, "Error\n", 6);
 	write(2, msg, ft_strlen(msg));
-	if (g)
-	{
-		if (g->fd >= 0)
-			close(g->fd);
-		if (g->pars.map)
-			free_map(g);
-		if (g->pars.visited)
-			free_visited(g);
-		free(g);
-	}
 	exit(EXIT_FAILURE);
 }
 
-int open_file(t_game *g)
+int	open_file(t_game *g)
 {
-    g->fd = open(g->filename, O_RDONLY);
-    if (g->fd < 0)
-        return (-1);
-    return (g->fd);
+	g->fd = open(g->filename, O_RDONLY);
+	if_not((void *)(long)(g->fd >= 0), "Failed to open map file\n", g, free_parsing);
+	return (g->fd);
 }
 
-int close_file(t_game *g, int lines_read, int total_lines)
+int	close_file(t_game *g, int lines_read, int total_lines)
 {
-    close(g->fd);
-    if (lines_read != total_lines)
-        return (-1);
-    return (0);
+	close(g->fd);
+	if_not((void *)(long)(lines_read == total_lines), "Map file is incomplete\n", g, free_parsing);
+	return (0);
 }
 
 int	close_window(t_game *g)
 {
-	destroy_textures(g);
-	if (g->window)
-		mlx_destroy_window(g->mlx, g->window);
-	if (g->pars.map)
-		free_map(g);
-	if (g->pars.visited)
-		free_visited(g);
-	if (g->mlx)
-	{
-		#ifdef __linux__
-			mlx_destroy_display(g->mlx);
-		#endif
-		free(g->mlx);
-	}
+	free_game(g);
 	#ifdef __APPLE__
-		exit(0);  // MacOS
+		exit(0);
 	#else
-		mlx_loop_end(g->mlx);  // Linux
+		mlx_loop_end(g->mlx);
 	#endif
+	return (0);
+}
+
+int	if_not(void *ptr, char *msg, t_game *g, void (*free_func)(t_game *))
+{
+	if (!ptr)
+	{
+		if (free_func)
+			free_func(g);
+		error_exit(msg);
+	}
 	return (0);
 }

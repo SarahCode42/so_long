@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dfs.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: YonathanetSarah <YonathanetSarah@studen    +#+  +:+       +#+        */
+/*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 20:58:56 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/07 17:48:48 by YonathanetS      ###   ########.fr       */
+/*   Updated: 2025/03/16 14:40:10 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,61 +16,50 @@ void	init_visited(t_game *g)
 {
 	int	i;
 
-	g->pars.visited = ft_calloc(g->pars.height, sizeof(int *));
-	if (!g->pars.visited)
-		return ;
+	g->parsing->visited = ft_calloc(g->parsing->height, sizeof(int *));
+	if_not(g->parsing->visited, "Memory allocation failed for visited array\n", g, free_parsing);
+
 	i = 0;
-	while (i < g->pars.height)
+	while (i < g->parsing->height)
 	{
-		g->pars.visited[i] = ft_calloc(g->pars.width, sizeof(int));
-		if (!g->pars.visited[i])
-		{
-			while (--i >= 0)
-				free(g->pars.visited[i]);
-			free(g->pars.visited);
-			return ;
-		}
+		g->parsing->visited[i] = ft_calloc(g->parsing->width, sizeof(int));
+		if_not(g->parsing->visited[i], "Memory allocation failed for visited row\n", g, free_visited);
 		i++;
 	}
 }
 
 void	dfs_recurs(t_game *g, int x, int y)
 {
-	if (x < 0 || x >= g->pars.width || y < 0 || y >= g->pars.height ||
-		g->pars.map[y][x] == '1' || g->pars.visited[y][x])
+	if (x < 0 || x >= g->parsing->width || y < 0 || y >= g->parsing->height ||
+		g->parsing->map[y][x] == '1' || g->parsing->visited[y][x])
 		return ;
-	g->pars.visited[y][x] = 1;
+	if (g->parsing->map[y][x] == 'E' && g->parsing->collectibles_found < g->parsing->collect_count)
+		return;
+	g->parsing->visited[y][x] = 1;
+	if (g->parsing->map[y][x] == 'C')
+		g->parsing->collectibles_found++;
 	dfs_recurs(g, x + 1, y);
 	dfs_recurs(g, x - 1, y);
 	dfs_recurs(g, x, y + 1);
-	dfs_recurs(g,x, y - 1);
+	dfs_recurs(g, x, y - 1);
 }
 
 void	check_accessibility(t_game *g)
 {
-    int	x;
-    int	y;
+	if_not((void *)(long)g->parsing->visited[g->player.y][g->player.x],
+		"Player is blocked\n", g, free_parsing);
 
-	if (g->pars.visited[g->player.y][g->player.x] == 0)
-		error_exit("Player is blocked\n",g);
-	if (g->pars.visited[g->exit.y][g->exit.x] == 0)
-		error_exit("Exit is not accessible\n", g);
-    y = 0;
-    while (y < g->pars.height)
-    {
-        x = 0;
-        while (x < g->pars.width)
-        {
-			if (g->pars.map[y][x] == 'C' && g->pars.visited[y][x] == 0)
-				error_exit("Not all collectibles are accessible\n", g);
-            x++;
-        }
-        y++;
-    }
+	if_not((void *)(long)(g->parsing->collectibles_found == g->parsing->collect_count),
+		"Not all collectibles are accessible\n", g, free_parsing);
+
+	if_not((void *)(long)g->parsing->visited[g->exit.y][g->exit.x],
+		"Exit is not accessible\n", g, free_parsing);
 }
+
 
 int	dfs(t_game *g)
 {
+	g->parsing->collectibles_found = 0;
 	init_visited(g);
 	dfs_recurs(g, g->player.x, g->player.y);
 	check_accessibility(g);
