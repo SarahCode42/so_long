@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/16 14:50:40 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 14:46:52 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ int	key_loop(void *param)
 {
 	t_game *g = (t_game *)param;
 
-	if (!g->game_over && g->key_pressed != -1 && g->frame++ % 10 == 0)
+	usleep(3000);
+	g->frame++;
+	if (g->frame > 1000000)
+		g->frame = 0;
+	if (!g->game_over && g->key_pressed != -1 && g->frame % 5 == 0)
 	{
 		if (g->key_pressed == W)
 			move_player(g, 0, -1);
@@ -42,10 +46,10 @@ int	key_loop(void *param)
 			move_player(g, -1, 0);
 		else if (g->key_pressed == D)
 			move_player(g, 1, 0);
+		g->key_pressed = -1;
 	}
 	return (0);
 }
-
 
 void	key(t_game *g)
 {

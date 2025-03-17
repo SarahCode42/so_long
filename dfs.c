@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 20:58:56 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/16 14:40:10 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 14:35:33 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	init_visited(t_game *g)
 
 	g->parsing->visited = ft_calloc(g->parsing->height, sizeof(int *));
 	if_not(g->parsing->visited, "Memory allocation failed for visited array\n", g, free_parsing);
-
 	i = 0;
 	while (i < g->parsing->height)
 	{
@@ -33,8 +32,6 @@ void	dfs_recurs(t_game *g, int x, int y)
 	if (x < 0 || x >= g->parsing->width || y < 0 || y >= g->parsing->height ||
 		g->parsing->map[y][x] == '1' || g->parsing->visited[y][x])
 		return ;
-	if (g->parsing->map[y][x] == 'E' && g->parsing->collectibles_found < g->parsing->collect_count)
-		return;
 	g->parsing->visited[y][x] = 1;
 	if (g->parsing->map[y][x] == 'C')
 		g->parsing->collectibles_found++;
@@ -48,14 +45,11 @@ void	check_accessibility(t_game *g)
 {
 	if_not((void *)(long)g->parsing->visited[g->player.y][g->player.x],
 		"Player is blocked\n", g, free_parsing);
-
 	if_not((void *)(long)(g->parsing->collectibles_found == g->parsing->collect_count),
 		"Not all collectibles are accessible\n", g, free_parsing);
-
 	if_not((void *)(long)g->parsing->visited[g->exit.y][g->exit.x],
 		"Exit is not accessible\n", g, free_parsing);
 }
-
 
 int	dfs(t_game *g)
 {

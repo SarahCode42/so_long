@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:39:31 by YonathanetS       #+#    #+#             */
-/*   Updated: 2025/03/16 15:46:36 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 14:29:19 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	count_height(t_game *g)
 	if_not((void *)(long)(g->parsing->height > 0), "Map file is empty\n", g, free_parsing);
 }
 
-
 int	count_width(t_game *g, int i)
 {
 	int	len;
@@ -45,11 +44,9 @@ int	count_width(t_game *g, int i)
 
 void	find_player(t_game *g, int i, int j)
 {
-	if_not(g, "Game structure is NULL in find_player\n", NULL, NULL);
 	g->player.x = j;
 	g->player.y = i;
 	g->parsing->player_count++;
-	if_not((void *)(long)(g->parsing->player_count == 1), "Multiple player positions found\n", g, free_parsing);
 }
 
 void	find_exit(t_game *g, int i, int j)
@@ -60,4 +57,3 @@ void	find_exit(t_game *g, int i, int j)
 	g->parsing->exit_count++;
 	if_not((void *)(long)(g->parsing->exit_count == 1), "Multiple exit positions found\n", g, free_parsing);
 }
-

@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 14:52:29 by YonathanetS       #+#    #+#             */
-/*   Updated: 2025/03/16 15:39:34 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:13:13 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,11 @@ void	free_parsing(t_game *g)
 {
 	if (!g || !g->parsing)
 		return;
+	if (g->parsing->map)
+	{
+		free_map(g->parsing->map);
+		g->parsing->map = NULL;
+	}
 	if (g->parsing->visited)
 	{
 		free_visited(g);
@@ -65,14 +70,14 @@ void	free_textures(t_game *g)
 		return;
 	if (g->textures->wall)
 		mlx_destroy_image(g->mlx, g->textures->wall);
-	if (g->textures->floor)
-		mlx_destroy_image(g->mlx, g->textures->floor);
+	if (g->textures->background)
+		mlx_destroy_image(g->mlx, g->textures->background);
 	if (g->textures->player)
 		mlx_destroy_image(g->mlx, g->textures->player);
-	if (g->textures->collectible)
-		mlx_destroy_image(g->mlx, g->textures->collectible);
 	if (g->textures->exit)
 		mlx_destroy_image(g->mlx, g->textures->exit);
+	if (g->textures->collectible)
+		mlx_destroy_image(g->mlx, g->textures->collectible);
 	free(g->textures);
 	g->textures = NULL;
 }
@@ -81,12 +86,21 @@ void	free_game(t_game *g)
 {
 	if (!g)
 		return;
-	if (g->parsing->visited)
+	if (g->parsing)
 	{
 		free_parsing(g);
-		g->parsing->visited = NULL;
+		g->parsing = NULL;
 	}
-	free_textures(g);
+	if (g->textures)
+	{
+		free_textures(g);
+		g->textures = NULL;
+	}
+	if (g->img) // Suppression d'une éventuelle image unique
+	{
+		mlx_destroy_image(g->mlx, g->img);
+		g->img = NULL;
+	}
 	if (g->window)
 	{
 		mlx_destroy_window(g->mlx, g->window);
@@ -104,4 +118,7 @@ void	free_game(t_game *g)
 		g->filename = NULL;
 	}
 	free(g);
+	g = NULL;
 }
+
+

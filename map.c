@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/16 15:46:28 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:19:13 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	load_map(t_game *g)
 	}
 	g->parsing->map[i] = NULL;
 	if_not((void *)(long)(i == g->parsing->height), "Map file is incomplete\n", g, free_parsing);
+	free(line);
+	close(g->fd);
 }
 
 t_textures	*load_textures(t_game *g)
@@ -41,19 +43,14 @@ t_textures	*load_textures(t_game *g)
 
 	g->textures = ft_calloc(1, sizeof(t_textures));
 	if_not(g->textures, "Memory allocation failed\n", g, free_game);
-
 	g->textures->wall = mlx_xpm_file_to_image(g->mlx, "textures/wall.xpm", &w, &h);
 	if_not(g->textures->wall, "Unable to load wall texture.\n", g, free_textures);
-
-	g->textures->floor = mlx_xpm_file_to_image(g->mlx, "textures/floor.xpm", &w, &h);
-	if_not(g->textures->floor, "Unable to load floor texture.\n", g, free_textures);
-
+	g->textures->background = mlx_xpm_file_to_image(g->mlx, "textures/background.xpm", &w, &h);
+	if_not(g->textures->background, "Unable to load background texture.\n", g, free_textures);
 	g->textures->player = mlx_xpm_file_to_image(g->mlx, "textures/player.xpm", &w, &h);
 	if_not(g->textures->player, "Unable to load player texture.\n", g, free_textures);
-
 	g->textures->collectible = mlx_xpm_file_to_image(g->mlx, "textures/collectible.xpm", &w, &h);
 	if_not(g->textures->collectible, "Unable to load collectible texture.\n", g, free_textures);
-
 	g->textures->exit = mlx_xpm_file_to_image(g->mlx, "textures/exit.xpm", &w, &h);
 	if_not(g->textures->exit, "Unable to load exit texture.\n", g, free_textures);
 
@@ -71,7 +68,7 @@ void	*get_texture(t_game *g, char c)
 	if (c == 'E')
 		return (g->textures->exit);
 	if (c == '0')
-		return (g->textures->floor);
+		return (g->textures->background);
 	return (NULL);
 }
 
@@ -91,7 +88,6 @@ int	draw_map(t_game *g)
 			if_not(img, "Map contains an unknown element\n", g, free_game);
 			if_not((void *)(long)(mlx_put_image_to_window(g->mlx, g->window, img, x * TILE_SIZE, y * TILE_SIZE) != -1),
 				"Failed to render image\n", g, free_game);
-	 
 			x++;
 		}
 		y++;

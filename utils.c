@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:44:20 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/16 15:46:51 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 14:44:00 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,7 @@ int	close_file(t_game *g, int lines_read, int total_lines)
 int	close_window(t_game *g)
 {
 	free_game(g);
-	#ifdef __APPLE__
-		exit(0);
-	#else
-		mlx_loop_end(g->mlx);
-	#endif
+	exit(0);
 	return (0);
 }
 

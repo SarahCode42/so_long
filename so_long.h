@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/16 15:59:42 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:13:08 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_point
 typedef struct s_textures
 {
 	void	*wall;
-	void	*floor;
+	void	*background;
 	void	*player;
 	void	*exit;
 	void	*collectible;
@@ -77,6 +77,7 @@ typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
+	void		*img;
 	t_textures	*textures;
 	t_point		player;
 	t_point		exit;
@@ -119,8 +120,8 @@ void		draw_moves(t_game *g);
 
 // parsing.c
 void		check_walls(t_game *g);
+void		parse_map_line(t_game *g, int i);
 int			check_elements(t_game *g);
-
 void		check_extension(char *filename, t_game *g);
 void		parsing(t_game *g);
 
