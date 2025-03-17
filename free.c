@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 14:52:29 by YonathanetS       #+#    #+#             */
-/*   Updated: 2025/03/17 15:13:13 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:38:34 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,14 @@ void	free_map(char **map)
 	int	i;
 
 	if (!map)
-		return ;
+		return;
 	i = 0;
 	while (map[i])
 	{
 		free(map[i]);
-		map[i] = NULL;
 		i++;
 	}
 	free(map);
-	map = NULL;
 }
 
 void	free_visited(t_game *g)
@@ -84,41 +82,23 @@ void	free_textures(t_game *g)
 
 void	free_game(t_game *g)
 {
+	ft_printf("La fonction free game est bien appelee\n");
 	if (!g)
 		return;
 	if (g->parsing)
-	{
 		free_parsing(g);
-		g->parsing = NULL;
-	}
 	if (g->textures)
-	{
 		free_textures(g);
-		g->textures = NULL;
-	}
-	if (g->img) // Suppression d'une éventuelle image unique
-	{
+	if (g->img)
 		mlx_destroy_image(g->mlx, g->img);
-		g->img = NULL;
-	}
 	if (g->window)
-	{
 		mlx_destroy_window(g->mlx, g->window);
-		g->window = NULL;
-	}
 	if (g->mlx)
 	{
 		mlx_destroy_display(g->mlx);
 		free(g->mlx);
-		g->mlx = NULL;
 	}
 	if (g->filename)
-	{
 		free(g->filename);
-		g->filename = NULL;
-	}
 	free(g);
-	g = NULL;
 }
-
-
