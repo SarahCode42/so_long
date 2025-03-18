@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 14:52:29 by YonathanetS       #+#    #+#             */
-/*   Updated: 2025/03/17 15:38:34 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:53:27 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	free_textures(t_game *g)
 
 void	free_game(t_game *g)
 {
-	ft_printf("La fonction free game est bien appelee\n");
 	if (!g)
 		return;
 	if (g->parsing)

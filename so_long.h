@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/17 15:13:08 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/18 11:33:13 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include "GetNextLine/get_next_line.h"
 
 # define TILE_SIZE 32
+# define MAX_WIDTH 120
+# define MAX_HEIGHT 100
 
 // Keyboard (Linux)
 # define ESC 65307
@@ -136,7 +138,7 @@ void		error_exit(char *msg);
 int			open_file(t_game *g);
 int			close_file(t_game *g, int lines_read, int total_lines);
 int			close_window(t_game *g);
-int			if_not(void *ptr, char *msg, t_game *g, void (*free_func)(t_game *));
+int			if_not(void *ptr, char *msg, t_game *g);
 
 // key.c
 int			key_press(int keycode, t_game *g);

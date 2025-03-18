@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/17 14:46:52 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 19:07:16 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int	key_loop(void *param)
 
 void	key(t_game *g)
 {
-	if_not(g->window, "Window is NULL in key\n", g, free_game);
-	if_not(g->mlx, "MLX is NULL in key\n", g, free_game);
+	if_not(g->window, "Window is NULL in key\n", g);
+	if_not(g->mlx, "MLX is NULL in key\n", g);
 	g->key_pressed = -1;
 	mlx_hook(g->window, 17, 0, close_window, g);
 	mlx_hook(g->window, 2, 1L << 0, key_press, g);

@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:34:05 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/16 15:26:35 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 19:11:04 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	move_player(t_game *g, int dx, int dy)
 
 void	update_player_position(t_game *g, int new_x, int new_y)
 {
-	if_not(g->parsing->map, "Map structure is NULL in update_player_position\n", g, free_game);
+	if_not(g->parsing->map, "Map structure is NULL in update_player_position\n", g);
 	if (new_x < 0 || new_x >= g->parsing->width || new_y < 0 || new_y >= g->parsing->height)
 		return ;
 	if (g->parsing->map[new_y][new_x] == 'C')

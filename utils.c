@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 10:44:20 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/17 14:44:00 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/17 19:06:58 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void	error_exit(char *msg)
 int	open_file(t_game *g)
 {
 	g->fd = open(g->filename, O_RDONLY);
-	if_not((void *)(long)(g->fd >= 0), "Failed to open map file\n", g, free_parsing);
+	if_not((void *)(long)(g->fd >= 0), "Failed to open map file\n", g);
 	return (g->fd);
 }
 
 int	close_file(t_game *g, int lines_read, int total_lines)
 {
 	close(g->fd);
-	if_not((void *)(long)(lines_read == total_lines), "Map file is incomplete\n", g, free_parsing);
+	if_not((void *)(long)(lines_read == total_lines), "Map file is incomplete\n", g);
 	return (0);
 }
 
@@ -40,12 +40,11 @@ int	close_window(t_game *g)
 	return (0);
 }
 
-int	if_not(void *ptr, char *msg, t_game *g, void (*free_func)(t_game *))
+int	if_not(void *ptr, char *msg, t_game *g)
 {
 	if (!ptr)
 	{
-		if (free_func)
-			free_func(g);
+		free_game(g);
 		error_exit(msg);
 	}
 	return (0);

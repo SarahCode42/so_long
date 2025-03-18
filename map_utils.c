@@ -6,36 +6,42 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:39:31 by YonathanetS       #+#    #+#             */
-/*   Updated: 2025/03/17 14:29:19 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/18 12:32:28 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	count_height(t_game *g)
+void count_height(t_game *g)
 {
-	char	*line;
+    char *line;
+    int width;
 
-	if_not(g->parsing, "Parsing structure is NULL in count_height\n", g, free_game);
-	if_not((void *)(long)(open_file(g) >= 0), "Failed to open map file\n", g, free_parsing);
-	g->parsing->height = 0;
-	line = get_next_line(g->fd);
-	while (line)
-	{
-		if_not((void *)(long)(ft_strlen(line) > 1), "Map contains an empty line\n", g, free_parsing);
-		g->parsing->height++;
-		free(line);
-		line = get_next_line(g->fd);
-	}
-	close(g->fd);
-	if_not((void *)(long)(g->parsing->height > 0), "Map file is empty\n", g, free_parsing);
+    if_not(g->parsing, "Parsing structure is NULL in count_height\n", g);
+    g->fd = open_file(g);
+    if_not((void *)(long)(g->fd >= 0), "Failed to open map file\n", g);
+    g->parsing->height = 0;
+    line = get_next_line(g->fd);
+    while (line)
+    {
+        width = ft_strlen(line);
+        if_not((void *)(long)(width <= MAX_WIDTH), "Map width exceeds maximum allowed\n", g);
+        if_not((void *)(long)(g->parsing->height < MAX_HEIGHT), "Map height exceeds maximum allowed\n", g);
+        if (width > 0)
+            g->parsing->height++;
+        free(line);
+        line = get_next_line(g->fd);
+    }
+    close(g->fd);
+    if_not((void *)(long)(g->parsing->height > 0), "Map file is empty\n", g);
 }
+
 
 int	count_width(t_game *g, int i)
 {
 	int	len;
 
-	if_not(g->parsing->map[i], "Invalid map row\n", g, free_parsing);
+	if_not(g->parsing->map[i], "Invalid map row\n", g);
 	len = ft_strlen(g->parsing->map[i]);
 	if (g->parsing->map[i][len - 1] == '\n')
 		len--;
@@ -51,9 +57,9 @@ void	find_player(t_game *g, int i, int j)
 
 void	find_exit(t_game *g, int i, int j)
 {
-	if_not(g, "Game structure is NULL in find_exit\n", NULL, NULL);
+	if_not(g, "Game structure is NULL in find_exit\n", NULL);
 	g->exit.x = j;
 	g->exit.y = i;
 	g->parsing->exit_count++;
-	if_not((void *)(long)(g->parsing->exit_count == 1), "Multiple exit positions found\n", g, free_parsing);
+	if_not((void *)(long)(g->parsing->exit_count == 1), "Multiple exit positions found\n", g);
 }
