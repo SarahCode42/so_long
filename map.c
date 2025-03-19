@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 12:19:17 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/19 11:33:33 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:39:37 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	load_map(t_game *g)
 	int	i;
 
 	count_height(g);
-	if_not(g->parsing->height > 0, "Invalid map height\n", g);
+	if_not((void *)(long)(g->parsing->height > 0), "Invalid map height\n", g);
 	g->fd = open_file(g);
 	g->parsing->map = malloc(sizeof(char *) * (g->parsing->height + 1));
 	if_not(g->parsing->map, "Failed to allocate memory for map\n", g);
@@ -28,7 +28,8 @@ void	load_map(t_game *g)
 		g->parsing->map[i++] = g->line;
 		g->line = get_next_line(g->fd);
 	}
-	if_not(i == g->parsing->height, "Map file is incomplete\n", g);
+	if_not((void *)(long)(i == g->parsing->height), \
+		"Map file is incomplete\n", g);
 	g->parsing->map[i] = NULL;
 	free(g->line);
 	close(g->fd);

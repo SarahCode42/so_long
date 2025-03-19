@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/18 18:26:04 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:09:10 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int			if_not(void *ptr, char *msg, t_game *g);
 // key.c
 int			key_press(int keycode, t_game *g);
 int			key_release(int keycode, t_game *g);
-int			key_loop(void *param);
+int			key_loop(t_game *g);
 void		key(t_game *g);
 
 #endif

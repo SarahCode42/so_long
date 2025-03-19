@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 19:39:31 by YonathanetS       #+#    #+#             */
-/*   Updated: 2025/03/18 17:11:43 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:39:23 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	count_height(t_game *g)
 
 	if_not(g->parsing, "Parsing structure is NULL in count_height\n", g);
 	g->fd = open_file(g);
-	if_not(g->fd >= 0, "Failed to open map file\n", g);
+	if_not((void *)(long)(g->fd >= 0), "Failed to open map file\n", g);
 	g->parsing->height = 0;
 	g->line = get_next_line(g->fd);
 	while (g->line)
@@ -30,7 +30,7 @@ void	count_height(t_game *g)
 		g->line = get_next_line(g->fd);
 	}
 	close(g->fd);
-	if_not(g->parsing->height > 0, "Map file is empty\n", g);
+	if_not((void *)(long)(g->parsing->height > 0), "Map file is empty\n", g);
 }
 
 int	count_width(t_game *g, int i)
