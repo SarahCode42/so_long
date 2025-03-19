@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 14:52:29 by YonathanetS       #+#    #+#             */
-/*   Updated: 2025/03/17 15:53:27 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:38:09 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	free_map(char **map)
 	int	i;
 
 	if (!map)
-		return;
+		return ;
 	i = 0;
 	while (map[i])
 	{
@@ -32,7 +32,7 @@ void	free_visited(t_game *g)
 	int	i;
 
 	if (!g || !g->parsing || !g->parsing->visited)
-		return;
+		return ;
 	i = 0;
 	while (i < g->parsing->height)
 	{
@@ -47,7 +47,7 @@ void	free_visited(t_game *g)
 void	free_parsing(t_game *g)
 {
 	if (!g || !g->parsing)
-		return;
+		return ;
 	if (g->parsing->map)
 	{
 		free_map(g->parsing->map);
@@ -65,7 +65,7 @@ void	free_parsing(t_game *g)
 void	free_textures(t_game *g)
 {
 	if (!g || !g->textures)
-		return;
+		return ;
 	if (g->textures->wall)
 		mlx_destroy_image(g->mlx, g->textures->wall);
 	if (g->textures->background)
@@ -83,7 +83,7 @@ void	free_textures(t_game *g)
 void	free_game(t_game *g)
 {
 	if (!g)
-		return;
+		return ;
 	if (g->parsing)
 		free_parsing(g);
 	if (g->textures)

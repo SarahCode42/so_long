@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:16:38 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/17 19:07:16 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:43:19 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int	key_release(int keycode, t_game *g)
 
 int	key_loop(void *param)
 {
-	t_game *g = (t_game *)param;
-
+	(void)param;
 	usleep(3000);
 	g->frame++;
 	if (g->frame > 1000000)

@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 10:38:06 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/18 11:33:13 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:26:04 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@
 # include "GetNextLine/get_next_line.h"
 
 # define TILE_SIZE 32
-# define MAX_WIDTH 120
-# define MAX_HEIGHT 100
 
 // Keyboard (Linux)
 # define ESC 65307
@@ -45,8 +43,8 @@
 // Positions
 typedef struct s_point
 {
-	int	x;
-	int	y;
+	int		x;
+	int		y;
 	int		moves;
 	int		collected;
 }t_point;
@@ -92,6 +90,7 @@ typedef struct s_game
 	int			last_move_time;
 	int			level;
 	int			frame;
+	char		*line;
 }t_game;
 
 // dfs.c

@@ -6,7 +6,7 @@
 /*   By: jbensimo <jbensimo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:34:05 by jbensimo          #+#    #+#             */
-/*   Updated: 2025/03/17 19:11:04 by jbensimo         ###   ########.fr       */
+/*   Updated: 2025/03/18 18:29:10 by jbensimo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	can_move(t_game *g, int new_x, int new_y)
 {
-	if (new_x < 0 || new_x >= g->parsing->width || new_y < 0 || new_y >= g->parsing->height)
+	if (new_x < 0 || new_x >= g->parsing->width || new_y < 0
+		|| new_y >= g->parsing->height)
 		return (0);
 	if (!g->parsing->map[new_y] || !g->parsing->map[new_y][new_x])
 		return (0);
@@ -23,7 +24,6 @@ int	can_move(t_game *g, int new_x, int new_y)
 	if (g->parsing->map[new_y][new_x] == 'E'
 		&& g->player.collected < g->parsing->collect_count)
 		return (0);
-
 	return (1);
 }
 
@@ -33,22 +33,19 @@ void	move_player(t_game *g, int dx, int dy)
 	int	new_y;
 
 	if (g->game_over)
-		return;
+		return ;
 	new_x = g->player.x + dx;
 	new_y = g->player.y + dy;
 	if (!can_move(g, new_x, new_y))
 		return ;
 	g->player.moves++;
 	update_player_position(g, new_x, new_y);
-	if (g->parsing->map[new_y][new_x] == 'E' && g->player.collected == g->parsing->collect_count)
+	if (g->parsing->map[new_y][new_x] == 'E'
+		&& g->player.collected == g->parsing->collect_count)
 	{
 		ft_printf("Level completed! in %d moves\n", g->player.moves);
-		#ifdef __APPLE__
-			exit(0);
-		#else
-			mlx_loop_end(g->mlx);
-		#endif
-		return;
+		mlx_loop_end(g->mlx);
+		return ;
 	}
 	draw_map(g);
 	draw_moves(g);
@@ -56,8 +53,9 @@ void	move_player(t_game *g, int dx, int dy)
 
 void	update_player_position(t_game *g, int new_x, int new_y)
 {
-	if_not(g->parsing->map, "Map structure is NULL in update_player_position\n", g);
-	if (new_x < 0 || new_x >= g->parsing->width || new_y < 0 || new_y >= g->parsing->height)
+	if_not(g->parsing->map, "Map NULL in update_player_position\n", g);
+	if (new_x < 0 || new_x >= g->parsing->width || new_y < 0
+		|| new_y >= g->parsing->height)
 		return ;
 	if (g->parsing->map[new_y][new_x] == 'C')
 		g->player.collected++;
